@@ -98,7 +98,8 @@ select * from user_vote;
 
 /* Insert into user_reserve_product */
 insert into user_reserve_product(idUserOwner, idProduct, idUserBuyer, reserveStatus)
-values(4, 5, 2, 'aceptada'),
+values (7, 13, 2, 'pendiente'),
+(4, 5, 2, 'aceptada'),
 (5, 3, 8, 'pendiente'),
 (5, 3, 6, 'denegada'),
 (7, 12, 3, 'aceptada'),
