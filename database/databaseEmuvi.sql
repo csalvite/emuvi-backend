@@ -22,7 +22,7 @@ CREATE TABLE user(
     street VARCHAR(50),
     postalCode CHAR(5),
     city VARCHAR(30),
-    state VARCHAR(25)
+    province VARCHAR(25)
 );
 
 CREATE TABLE product(
@@ -64,7 +64,7 @@ CREATE TABLE user_vote(
     FOREIGN KEY (idUser) REFERENCES user(id)
 );
 
-CREATE TABLE user_reverse_product(
+CREATE TABLE user_reserve_product(
     id INT PRIMARY KEY AUTO_INCREMENT,
     idUserOwner INT NOT NULL,
     idProduct INT NOT NULL,
@@ -73,4 +73,12 @@ CREATE TABLE user_reverse_product(
     FOREIGN KEY (idUserOwner) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (idProduct) REFERENCES product(id) ON DELETE CASCADE,
     FOREIGN KEY (idUserBuyer) REFERENCES user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE notification(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    type ENUM('aceptada', 'denegada', 'pendiente'),
+    createdAt DATETIME,
+    idReserve INT,
+    FOREIGN KEY (idReserve) REFERENCES user_reserve_product(id)
 );
