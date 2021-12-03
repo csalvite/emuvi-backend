@@ -1,11 +1,13 @@
-const mysql = require('mysql2');
-const DB = require('./getDB');
-const faker = require('faker');
-const bcrypt = require('bcrypt');
+//const mysql = require('mysql2');
+const getDB = require('./getDB');
+
+//const faker = require('faker');
+//const bcrypt = require('bcrypt');
 async function main() {
   let connection;
   try {
-    connection = await DB();
+    connection = await getDB();
+
     await connection.query('DROP TABLE IF EXISTS user');
     await connection.query('DROP TABLE IF EXISTS product');
     await connection.query('DROP TABLE IF EXISTS product_photo');
@@ -101,6 +103,7 @@ CREATE TABLE notification(
     idReserve INT,
     FOREIGN KEY (idReserve) REFERENCES user_reserve_product(id)
 )`);
+    console.log('Tablas creadas');
   } catch (err) {
     console.log(err);
   } finally {
