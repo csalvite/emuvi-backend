@@ -60,3 +60,28 @@ module.exports = {
   generateRandomString,
   sendMail,
 };
+/**
+ * #################
+ * ## deletePhoto ##
+ * #################
+ */
+
+async function deletePhoto(photoName) {
+  try {
+    // Creamos la ruta absoluta de la foto.
+    const photoPath = path.join(uploadsDir, photoName);
+
+    // Eliminamos la foto del disco.
+    await unlink(photoPath);
+  } catch (_) {
+    throw new Error('Error al eliminar la imagen del servidor');
+  }
+}
+
+module.exports = {
+  generateRandomString,
+  sendMail,
+  verifyEmail,
+  deletePhoto,
+  validate,
+};
