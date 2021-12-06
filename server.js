@@ -21,6 +21,9 @@ const { newUser, validateUser } = require('./controllers/user');
   ### Endpoints User ###
   ######################
 */
+
+app.post('/users', newUser);
+
 app.post('/users/register/:registrationCode', validateUser);
 
 /*

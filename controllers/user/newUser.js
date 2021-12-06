@@ -1,13 +1,13 @@
-/* const getDB = require('../../database/getDB');
+const getDB = require('../../database/getDB');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-/* 
+
 const {
   generateRandomString,
   verifyEmail,
   validate,
 } = require('../../helpers');
- 
+
 const newUser = async (req, res, next) => {
   let connection;
 
@@ -60,4 +60,3 @@ const newUser = async (req, res, next) => {
 };
 
 module.exports = newUser;
- */
