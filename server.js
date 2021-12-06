@@ -9,7 +9,25 @@ const { PORT } = process.env;
 app.use(express.json());
 app.use(morgan('dev'));
 
-//midedleware error
+/* 
+  ##############################
+  ### Controlladores Usuario ###
+  ##############################
+*/
+const { newUser, validateUser } = require('./controllers/user');
+
+/* 
+  ######################
+  ### Endpoints User ###
+  ######################
+*/
+app.post('/users/register/:registrationCode', validateUser);
+
+/*
+  #####################################
+  ### Middlewares Error y Not Found ###
+  #####################################
+*/
 
 app.use((error, req, res, next) => {
   console.error(error);
