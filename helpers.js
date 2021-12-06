@@ -3,6 +3,7 @@
 */
 const crypto = require('cripto');
 const sgMail = require('@sengrid/mail');
+const path = require('path');
 
 //Importar las variables de entorno necesarias
 const { SENGRID_API_KEY, SENGRID_FROM, PUBLIC_HOST, UPLOADS_DIRECTORY } =

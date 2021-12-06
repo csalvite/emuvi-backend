@@ -13,29 +13,23 @@ const { PORT } = process.env;
  * ## Controladores de usuarios ##
  * ###############################
  * */
-const { loginUser } = require('./controllers/user');
-/**
- * ########################
- * ## Endpoints usuarios ##
- * ########################
- */
-// Logeamos a un usuario y retornamos un token.
-app.post('/user/login', loginUser);
+const {
+  loginUser,
+  editUser,
+  newUser,
+  validateUser,
+} = require('./controllers/user');
 
 /* 
-  ##############################
-  ### Controlladores Usuario ###
-  ##############################
-*/
-const { newUser, validateUser } = require('./controllers/user');
-
-/* 
-  ######################
-  ### Endpoints User ###
-  ######################
+######################
+### Endpoints User ###
+######################
 */
 
 app.post('/users', newUser);
+
+// Logeamos a un usuario y retornamos un token.
+app.post('/user/login', loginUser);
 
 app.post('/users/register/:registrationCode', validateUser);
 
@@ -45,7 +39,7 @@ app.post('/users/register/:registrationCode', validateUser);
   #####################################
 */
 
-app.use((error, req, res, next) => {
+app.use((error, req, res, _) => {
   console.error(error);
   res.status(error.httpStatus || 500).send({
     status: 'error',
