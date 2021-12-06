@@ -13,7 +13,7 @@ const { PORT } = process.env;
  * ## Controladores de usuarios ##
  * ###############################
  * */
-const { loginUser } = require('./controllers /user');
+const { loginUser } = require('./controllers/user');
 /**
  * ########################
  * ## Endpoints usuarios ##
@@ -22,7 +22,25 @@ const { loginUser } = require('./controllers /user');
 // Logeamos a un usuario y retornamos un token.
 app.post('/user/login', loginUser);
 
-//midedleware error
+/* 
+  ##############################
+  ### Controlladores Usuario ###
+  ##############################
+*/
+const { newUser, validateUser } = require('./controllers/user');
+
+/* 
+  ######################
+  ### Endpoints User ###
+  ######################
+*/
+app.post('/users/register/:registrationCode', validateUser);
+
+/*
+  #####################################
+  ### Middlewares Error y Not Found ###
+  #####################################
+*/
 
 app.use((error, req, res, next) => {
   console.error(error);
