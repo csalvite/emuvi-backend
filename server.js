@@ -3,11 +3,24 @@ require('dotenv').config();
 const express = require('express');
 
 const app = express();
+app.use(express.json());
+app.use(morgan('dev'));
 
 const { PORT } = process.env;
 
-app.use(express.json());
-app.use(morgan('dev'));
+/*
+ * ###############################
+ * ## Controladores de usuarios ##
+ * ###############################
+ * */
+const { loginUser } = require('./controllers/user');
+/**
+ * ########################
+ * ## Endpoints usuarios ##
+ * ########################
+ */
+// Logeamos a un usuario y retornamos un token.
+app.post('/user/login', loginUser);
 
 /* 
   ##############################
