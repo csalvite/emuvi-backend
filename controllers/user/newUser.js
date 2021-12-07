@@ -2,11 +2,7 @@ const getDB = require('../../database/getDB');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const {
-  generateRandomString,
-  verifyEmail,
-  validate,
-} = require('../../helpers');
+const { generateRandomString, verifyEmail } = require('../../helpers');
 
 const newUser = async (req, res, next) => {
   let connection;
@@ -14,15 +10,19 @@ const newUser = async (req, res, next) => {
   try {
     connection = await getDB();
 
-    // Validamos los datos del body.
-    await validate(newUserSchema, req.body);
-
     // Obtenemos los campos necesarios del body.
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
+
+    // Comprobamos que inserta todos los datos
+    if (!(username && email && password)) {
+      const error = new Error('Debes insertar todos los datos obligatorios');
+      error.httpStatus = 403;
+      throw error;
+    }
 
     // Comprobamos si el email existe en la base de datos.
     const [user] = await connection.query(
-      `SELECT id FROM users WHERE email = ?`,
+      `SELECT id FROM user WHERE email = ?`,
       [email]
     );
 
@@ -41,8 +41,8 @@ const newUser = async (req, res, next) => {
 
     // Guardamos el usuario en la base de datos.
     await connection.query(
-      `INSERT INTO users (email, password, registrationCode, createdAt) VALUES (?, ?, ?, ?)`,
-      [email, hashedPassword, registrationCode, new Date()]
+      `INSERT INTO user (username, email, password, registrationCode, createdAt) VALUES (?, ?, ?, ?, ?)`,
+      [username, email, hashedPassword, registrationCode, new Date()]
     );
 
     // Enviamos un mensaje de verificación al email del usuario.

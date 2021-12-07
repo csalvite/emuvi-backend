@@ -18,6 +18,7 @@ const {
   editUser,
   newUser,
   validateUser,
+  deleteUser,
 } = require('./controllers/user');
 
 /* 
@@ -26,12 +27,17 @@ const {
 ######################
 */
 
+// Nuevo usuario
 app.post('/users', newUser);
+
+// Completa registro y activa usuario
+app.post('/users/register/:registrationCode', validateUser);
 
 // Logeamos a un usuario y retornamos un token.
 app.post('/user/login', loginUser);
 
-app.post('/users/register/:registrationCode', validateUser);
+// Borramos usuario
+app.delete('/users/:idUser', deleteUser);
 
 /*
   #####################################
@@ -42,7 +48,7 @@ app.post('/users/register/:registrationCode', validateUser);
 app.use((error, req, res, _) => {
   console.error(error);
   res.status(error.httpStatus || 500).send({
-    status: 'error',
+    status: 'Error',
     message: error.message,
   });
 });

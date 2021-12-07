@@ -22,7 +22,7 @@ const loginUser = async (req, res, next) => {
 
     // Comprobamos si existe un usuario con ese email.
     const [user] = await connection.query(
-      `SELECT * FROM users WHERE email = ?`,
+      `SELECT * FROM user WHERE email = ?`,
       [email]
     );
 
@@ -45,7 +45,9 @@ const loginUser = async (req, res, next) => {
 
     // Si el usuario existe pero NO está activo lanzamos un error.
     if (!user[0].active) {
-      const error = new Error('Usuario pendiente de activar');
+      const error = new Error(
+        'Usuario pendiente de activar, comprueba tu correo para activarlo'
+      );
       error.httpStatus = 401;
       throw error;
     }
