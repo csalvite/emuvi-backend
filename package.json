@@ -24,9 +24,12 @@
     "date-fns": "^2.27.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "fs-extra": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "sharp": "^0.29.3",
+    "uuid": "^8.3.2"
   }
 }

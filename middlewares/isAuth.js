@@ -43,7 +43,6 @@ const isAuth = async (req, res, next) => {
       throw error;
     }
 
-    // Inyectamos en el objeto "request" la info del token: id, role.
     req.userAuth = tokenInfo;
 
     // Pasamos la pelota al siguiente middleware.
