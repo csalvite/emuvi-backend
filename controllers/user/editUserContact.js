@@ -1,10 +1,11 @@
-const { getConnection } = require('../../db');
+const getDB = require('../../database/getDB');
 const { savePhoto } = require('../../helpers');
 
 async function editUser(req, res, next) {
   let connection;
   try {
-    connection = await getConnection();
+    connection = await getDB();
+    const { idUser } = req.params;
 
     const { username, name, lastname, email, biography, birthday } = req.body;
 
@@ -13,13 +14,13 @@ async function editUser(req, res, next) {
       throw new Error('El nombre de usuario y el email son obligatorios');
 
     //comprobamos que no exista un usuario con el mismo email
-    const [existingUser] = await connection.query(
+    const [existuser] = await connection.query(
       `
             SELECT *
             FROM user
             WHERE email=? AND NOT id=?
             `,
-      [email, req.isauth.id]
+      [email, idUser]
     );
 
     //comprobamos que el nuevo email no coincida con uno ya existente
@@ -52,16 +53,7 @@ async function editUser(req, res, next) {
                 birthday=?
             WHERE id=?
             `,
-        [
-          nameFile,
-          username,
-          name,
-          lastname,
-          email,
-          biography,
-          birthday,
-          req.isauth.id,
-        ]
+        [nameFile, username, name, lastname, email, biography, birthday, idUser]
       );
 
       //actualizar usuario si no cambia la img
@@ -77,7 +69,7 @@ async function editUser(req, res, next) {
                 birthday=?
             WHERE id=?
             `,
-        [username, name, lastname, email, biography, birthday, req.isauth.id]
+        [username, name, lastname, email, biography, birthday, idUser]
       );
     }
 
