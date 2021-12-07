@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
 const path = require('path');
 const uuid = require('uuid');
+const sharp = require('sharp');
 const { ensureDir, unlink } = require('fs-extra');
 
 //Importar las variables de entorno necesarias
@@ -79,10 +80,10 @@ async function verifyEmail(email, registrationCode) {
 
 async function deletePhoto(photoName) {
   try {
-    // Creamos la ruta absoluta de la foto.
+    // Creamos la ruta absoluta de la foto
     const photoPath = path.join(uploadsDir, photoName);
 
-    // Eliminamos la foto del disco.
+    // Eliminamos la imagen de la ruta
     await unlink(photoPath);
   } catch (_) {
     throw new Error('Error al eliminar la imagen del servidor');
@@ -95,37 +96,31 @@ async function deletePhoto(photoName) {
  */
 async function savePhoto(image, type) {
   try {
-    // Comprobamos que el directorio de subida de imágenes exista.
+    // Comprobamos que el directorio de subida de imágenes existe
     await ensureDir(uploadsDir);
 
-    // Convertimos la imagen en un objeto "Sharp".
+    // Convertimos la imagen en objeto sharp
     const sharpImage = sharp(image.data);
 
-    // Accedemos a los metadatos de la imagen para posteriormente comprobar
-    // el ancho total.
     const imageInfo = await sharpImage.metadata();
 
-    // Si el tipo de imagen es 0 (avatar) redimensionamos la imagen a 150x150.
+    // Comprobamos el tipo de imagen pasado: 0 avatar ! 1 imagen para productos
     if (type === 0) {
       sharpImage.resize(150, 150);
+    } else if (type === 1 && imageInfo.width > 1000) {
+      // Solo en caso de ser imagen para producto y mayor de 1000px la redimensionamos
+      sharpImage.resize(1000, 1000);
     }
 
-    // Si la imagen es de tipo 2 (entrada) y el ancho supera el máximo indicado
-    // redimensionamos la imagen.
-    else if (type === 1 && imageInfo.width > 1000) {
-      sharpImage.resize(1000);
-    }
+    // Generamos un nombre único para la imagen
+    const imageName = uuid.v4() + '.jpg'; // tenemos que añadirle el .jpg por el rollo avatar
 
-    // Generamos un nombre único para la imagen.
-    const imageName = `${uuid.v4()}.jpg`;
-
-    // Creamos la ruta absoluta a la ubicación donde queremos guardar la imagen.
+    // Creamos ruta absoluta a la nueva ubicación de la imagen para guardarla
     const imagePath = path.join(uploadsDir, imageName);
 
-    // Guardamos la imagen en el directorio "uploads".
+    // Guardamos la imagen
     await sharpImage.toFile(imagePath);
 
-    // Retornamos el nombre del fichero.
     return imageName;
   } catch (_) {
     throw new Error('Error al procesar la imagen');

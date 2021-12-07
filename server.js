@@ -1,12 +1,21 @@
 const morgan = require('morgan');
 require('dotenv').config();
 const express = require('express');
+const fileUpload = require('express-fileupload');
 
+// Creamos servidor express
 const app = express();
-app.use(express.json());
-app.use(morgan('dev'));
 
 const { PORT } = process.env;
+
+// Desserializa body en formato raw
+app.use(express.json());
+
+// La morgana para support e info
+app.use(morgan('dev'));
+
+// Middleware para leer body en formato form-data
+app.use(fileUpload());
 
 /*
  * #################
@@ -16,6 +25,7 @@ const { PORT } = process.env;
 
 const isAuth = require('./middlewares/isAuth');
 const userExists = require('./middlewares/userExists');
+const canEditUser = require('./middlewares/canEditUser');
 
 /*
  * ###############################
@@ -30,6 +40,7 @@ const {
   validateUser,
   deleteUser,
   getUser,
+  editUserAvatar,
 } = require('./controllers/user');
 
 /* 
@@ -49,6 +60,17 @@ app.post('/user/login', loginUser);
 
 // Retornamos info de un usuario
 app.get('/users/:idUser', isAuth, userExists, getUser);
+
+// Actualizamos el avatar de un usuario
+app.put(
+  '/users/:idUser/avatar',
+  isAuth,
+  userExists,
+  canEditUser,
+  editUserAvatar
+);
+
+// Editamos username, email y password de Usuario
 
 // Borramos usuario
 app.delete('/users/:idUser', deleteUser);

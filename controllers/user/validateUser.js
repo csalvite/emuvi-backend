@@ -1,4 +1,5 @@
 const getDB = require('../../database/getDB');
+const { savePhoto } = require('../../helpers');
 
 const validateUser = async (req, res, next) => {
   let connection;
@@ -49,12 +50,16 @@ const validateUser = async (req, res, next) => {
       throw error;
     }
 
+    // Si existe un avatar, guardamos la imagen en disco
+    const avatarName = await savePhoto(req.files.avatar, 0);
+
     // Si están todos los datos obligatorios, actualizamos el usuario final
     await connection.query(
-      `update user set name = ?, lastname = ?, birthday = ?, biography = ?, registrationCode = null, createdAt = ?, phone = ?, latitude = ?, longitude = ?, street = ?, postalCode = ?, city = ?, province = ? where id = ?`,
+      `update user set name = ?, lastname = ?, avatar = ?, birthday = ?, biography = ?, registrationCode = null, createdAt = ?, phone = ?, latitude = ?, longitude = ?, street = ?, postalCode = ?, city = ?, province = ? where id = ?`,
       [
         name,
         lastname,
+        avatarName,
         birthday,
         biography,
         new Date(),
