@@ -9,16 +9,27 @@ app.use(morgan('dev'));
 const { PORT } = process.env;
 
 /*
+ * #################
+ * ## Middlewares ##
+ * #################
+ * */
+
+const isAuth = require('./middlewares/isAuth');
+const userExists = require('./middlewares/userExists');
+
+/*
  * ###############################
  * ## Controladores de usuarios ##
  * ###############################
  * */
+
 const {
   loginUser,
   editUser,
   newUser,
   validateUser,
   deleteUser,
+  getUser,
 } = require('./controllers/user');
 
 /* 
@@ -35,6 +46,9 @@ app.post('/users/register/:registrationCode', validateUser);
 
 // Logeamos a un usuario y retornamos un token.
 app.post('/user/login', loginUser);
+
+// Retornamos info de un usuario
+app.get('/users/:idUser', isAuth, userExists, getUser);
 
 // Borramos usuario
 app.delete('/users/:idUser', deleteUser);
