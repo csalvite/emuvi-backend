@@ -1,6 +1,8 @@
 //GET -> /users/:idUser/favorite - Devuelve una lista de productos
 // que consten como favoritos para el id de ese usuario.
 
+const getDB = require('../../database/getDB');
+
 const favProducts = async (req, res, next) => {
   let connection;
 
