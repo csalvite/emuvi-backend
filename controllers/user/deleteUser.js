@@ -11,25 +11,14 @@ const deleteUser = async (req, res, next) => {
 
     // Obtenemos el id del usuario que queremos borrar.
     const { idUser } = req.params;
-    const { password, confirmpassword } = req.body;
+    const { password, confirmPassword } = req.body;
 
     //Si no existe los campos contraseña y su respectiva confirmacion muestra error
-    if (!password || !confirmpassword)
+    if (!password || !confirmPassword)
       throw new Error('Debes introducir contraseñas');
 
-    if (password !== confirmpassword)
+    if (password !== confirmPassword)
       throw new Error('La contraseña y su confirmacion no coinciden');
-
-    /*  // Obtenemos el avatar del usuario.
-    const [userAvatar] = await connection.query(
-      `SELECT avatar FROM user WHERE id = ?`,
-      [id]
-    );
-
-    // Si el usuario tiene un avatar lo borramos del disco.
-    if (userAvatar[0].avatar) {
-      await deletePhoto(userAvatar[0].avatar);
-    } */
 
     //Obtenemos el datos del usuario
     const [user] = await connection.query(
@@ -43,15 +32,28 @@ const deleteUser = async (req, res, next) => {
       throw error;
     }
 
-    const confirmHashed = await bcrypt.hash(confirmpassword, saltRounds);
+    const isValid = await bcrypt.compare(confirmPassword, user[0].password);
 
-    const isvalid = await bcrypt.compare(user[0].password, confirmHashed);
-
-    if (!isvalid) {
-      throw new Error('las contraseñas no son iguales');
-    } else {
-      await connection.query(`DELETE FROM user WHERE id = ?`, [idUser]);
+    if (!isValid) {
+      const error = new Error(
+        'Las contraseña no es la que está guarda en base de datos'
+      );
+      error.httpStatus = 403;
+      throw error;
     }
+
+    // Obtenemos el avatar del usuario.
+    const [userAvatar] = await connection.query(
+      `SELECT avatar FROM user WHERE id = ?`,
+      [idUser]
+    );
+
+    // Si el usuario tiene un avatar lo borramos del disco.
+    if (userAvatar[0].avatar) {
+      await deletePhoto(userAvatar[0].avatar);
+    }
+
+    await connection.query(`DELETE FROM user WHERE id = ?`, [idUser]);
 
     res.send({
       status: 'ok',

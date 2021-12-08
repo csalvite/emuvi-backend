@@ -16,7 +16,7 @@ const editUser = async (req, res, next) => {
     const { newUsername, newEmail, oldPassword, newPassword } = req.body;
 
     //Si no llega ningun dato lanzamos un Error
-    if (!(newUsername, newEmail, oldPassword, newPassword)) {
+    if (!newUsername && !newEmail) {
       const error = new Error('Faltan campos por completar');
       error.httpStatus = 400;
       throw error;
@@ -24,12 +24,26 @@ const editUser = async (req, res, next) => {
 
     //Obtener el email, password y username del usuario actual.
     const [user] = await connection.query(
-      `SELECT username, password, email FROM user WHERE id = ?`,
+      `SELECT username, email FROM user WHERE id = ?`,
       [idUser]
     );
 
     // Variable message que se enviará en el res.send
-    let message = 'Usuario actualizado: ';
+    let message = 'Usuario actualizado:';
+
+    /* 
+      Si existen newUsername y newEmail pero son iguales a los ya registrados no se hace la actualización
+    */
+    if (
+      (newUsername && newUsername === user[0].username) ||
+      (newEmail && newEmail === user[0].email)
+    ) {
+      const error = new Error(
+        'No se ha podido realizar la actualización de usuario'
+      );
+      error.httpStatus = 409;
+      throw error;
+    }
 
     /* 
       En caso de que actualice su email, comprobamos si es distinto al existente
@@ -37,13 +51,13 @@ const editUser = async (req, res, next) => {
 
     if (newEmail && newEmail !== user[0].email) {
       // Antes de cambiarlo comprobamos que no existe otro usuario con ese mismo email
-      const [email] = await connection.query(
-        `SELECT id FROM users WHERE email = ?`,
+      const [emailQuery] = await connection.query(
+        `SELECT id FROM user WHERE email = ?`,
         [newEmail]
       );
 
       // Si el email existe lanzamos un error
-      if (email.leght > 0) {
+      if (emailQuery.length > 0) {
         const error = new Error(
           'Ya existe un usuario con ese email en la base de datos'
         );
@@ -55,7 +69,7 @@ const editUser = async (req, res, next) => {
 
       // actualizamos el usuario junto con el codigo de registro
       await connection.query(
-        `UPDATE user SET email = ?, registrationCode = ?, active = false, modifiedAt = ?
+        `UPDATE user SET email = ?, registrationCode = ?, active = 0, modifiedAt = ?
         WHERE id = ?`,
         [newEmail, registrationCode, new Date(), idUser]
       );
@@ -64,7 +78,7 @@ const editUser = async (req, res, next) => {
       await verifyEmail(newEmail, registrationCode);
 
       //Actualizamos el mensage que enviaremos al "res.send".
-      message += ', comprueba tu nuevo mail para activarlo';
+      message += ' comprueba tu nuevo mail para activarlo.';
     }
 
     /* 
@@ -73,41 +87,14 @@ const editUser = async (req, res, next) => {
       En caso de que haya username comprobamos si es distinto al existente
     */
 
-    if (username && username !== user[0].name) {
-      `UPDATE user SET username = ?, modifiedAt = ? where id = ?`,
-        [username, new Date(), idUser];
-    }
-
-    /* 
-      Password
-    */
-
-    const [passwordQuery] = connection.query(
-      `select password from user where id = ?`,
-      [idUser]
-    );
-
-    // Compruebo que la contraseña que quiere cambiar es la guardada en base de datos
-    const isValid = await bcrypt.compare(
-      oldPassword,
-      passwordQuery[0].password
-    );
-
-    if (!isValid) {
-      const error = new Error(
-        'La contraseña que quieres cambiar es diferente a la guardad en base de datos'
+    if (newUsername && newUsername !== user[0].username) {
+      await connection.query(
+        `UPDATE user SET username = ?, modifiedAt = ? where id = ?`,
+        [newUsername, new Date(), idUser]
       );
-      error.httpStatus = 401;
-      throw error;
+
+      message += ' Nombre de usuario actualizado.';
     }
-
-    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-
-    // Actualizamos la contraseña
-    await connection.query(
-      `update user set password = ?, modifiedAt = ? where id = ?`,
-      [hashedPassword, new Date(), idUser]
-    );
 
     res.send({
       status: 'ok',

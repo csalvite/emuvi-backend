@@ -41,6 +41,7 @@ const {
   deleteUser,
   getUser,
   editUserAvatar,
+  editUserData,
 } = require('./controllers/user');
 
 /* 
@@ -59,7 +60,7 @@ app.post('/users/register/:registrationCode', validateUser);
 app.post('/user/login', loginUser);
 
 // Retornamos info de un usuario
-app.get('/users/:idUser', isAuth, userExists, getUser);
+app.get('/users/:idUser', isAuth, userExists, getUser); // Si el usuario es anónimo no tiene una Authorization, podrá ver igual los datos?
 
 // Actualizamos el avatar de un usuario
 app.put(
@@ -71,6 +72,10 @@ app.put(
 );
 
 // Editamos username, email y password de Usuario
+app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
+
+// Editamos información del usuario (datos personales y de dirección)
+app.put('/users/:idUser/info', isAuth, userExists, canEditUser, editUserData);
 
 // Borramos usuario
 app.delete('/users/:idUser', deleteUser);

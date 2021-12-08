@@ -85,6 +85,7 @@ const getUser = async (req, res, next) => {
     // Si el usuario quiere ver su perfil, añadimos info
     if (user[0].id === idReqUser) {
       userInfo.username = user[0].username;
+      userInfo.email = user[0].email;
       userInfo.birthday = user[0].birthday;
       userInfo.biography = user[0].biography;
       userInfo.phone = user[0].phone;

@@ -36,9 +36,11 @@ const isAuth = async (req, res, next) => {
       [tokenInfo.id]
     );
 
-    // Si el usuario no está activado o si está eliminado lanzamos un mensaje de error.
+    // Si el usuario no está activado.
     if (!user[0].active) {
-      const error = new Error('El token no es válido');
+      const error = new Error(
+        'El token no es válido o el usuario no está activo, revisa tu correo'
+      );
       error.httpStatus = 401;
       throw error;
     }
