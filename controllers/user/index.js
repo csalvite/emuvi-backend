@@ -11,6 +11,7 @@ const getUser = require('./getUser');
 const editUserAvatar = require('./editUserAvatar');
 const editUserData = require('./editUserData');
 const editUserPassword = require('./editUserPassword');
+const userProducts = require('./userProducts');
 
 module.exports = {
   newUser,
@@ -22,4 +23,5 @@ module.exports = {
   editUserAvatar,
   editUserData,
   editUserPassword,
+  userProducts,
 };

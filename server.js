@@ -43,6 +43,7 @@ const {
   editUserAvatar,
   editUserData,
   editUserPassword,
+  userProducts,
 } = require('./controllers/user');
 
 /* 
@@ -89,6 +90,9 @@ app.put('/users/:idUser/info', isAuth, userExists, canEditUser, editUserData);
 
 // Borramos usuario
 app.delete('/users/:idUser', deleteUser);
+
+// Mi perfil -> Mis productos
+app.get('/users/:idUser/products', isAuth, userExists, userProducts);
 
 /*
   #####################################
