@@ -27,7 +27,7 @@ const getUser = async (req, res, next) => {
 
     // Para el perfil público necesitamos mostar sus productos
     const [products] = await connection.query(
-      `select name, price, description from product where idUser = ?`,
+      `select id, name, price, description from product where idUser = ?`,
       [idUser]
     );
 
@@ -37,20 +37,26 @@ const getUser = async (req, res, next) => {
     };
 
     // Si el usuario tiene productos se cargan en userProducts
+    userProducts.data = [];
     if (products.length > 1) {
-      userProducts.data = [];
       for (let i = 0; i < products.length; i++) {
+        const [photos] = await connection.query(
+          `select name from product_photo where idProduct = ?`,
+          [products[i].id]
+        );
+
         userProducts.data.push({
           name: products[i].name,
           price: products[i].price,
           description: products[i].description,
+          photos,
         });
       }
     }
 
     // Buscamos las valoraciones del usuario
     const [opinions] = await connection.query(
-      `select user.name, user_vote.vote, user_vote.comment, user_vote.date
+      `select user.name, user.avatar, user_vote.vote, user_vote.comment, user_vote.date
         from user inner join user_vote
           on (user.id = user_vote.idUser)
         where user_vote.idUserVoted = ?;`,
@@ -65,8 +71,9 @@ const getUser = async (req, res, next) => {
     // Cargamos un array de objetos con las propiedades de cada valoracion
     if (opinions.length > 1) {
       userVotes.data = [];
-      for (let i = 0; i < products.length - 1; i++) {
+      for (let i = 0; i < products.length; i++) {
         userVotes.data.push({
+          userAvatar: opinions[i].avatar,
           userName: opinions[i].name,
           vote: opinions[i].vote,
           comment: opinions[i].comment,

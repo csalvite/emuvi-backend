@@ -1,5 +1,8 @@
 const getDB = require('../../database/getDB');
 const { savePhoto } = require('../../helpers');
+const path = require('path');
+
+const { UPLOADS_DIRECTORY } = process.env;
 
 const validateUser = async (req, res, next) => {
   let connection;
@@ -52,6 +55,15 @@ const validateUser = async (req, res, next) => {
 
     // Si existe un avatar, guardamos la imagen en disco
     const avatarName = await savePhoto(req.files.avatar, 0);
+
+    // Si no existe un avatar insertamos el nuestro por defecto
+    if (!req.files && !req.files.avatar) {
+      const defaultAvatar = path.join(__dirname, UPLOADS_DIRECTORY);
+      const avatarName = await savePhoto(
+        defaultAvatar + '/defaultAvatar.jpg',
+        0
+      );
+    }
 
     // Si están todos los datos obligatorios, actualizamos el usuario final
     await connection.query(
