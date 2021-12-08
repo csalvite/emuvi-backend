@@ -10,6 +10,7 @@ const deleteUser = require('./deleteUser');
 const getUser = require('./getUser');
 const editUserAvatar = require('./editUserAvatar');
 const editUserData = require('./editUserData');
+const editUserPassword = require('./editUserPassword');
 
 module.exports = {
   newUser,
@@ -20,4 +21,5 @@ module.exports = {
   getUser,
   editUserAvatar,
   editUserData,
+  editUserPassword,
 };

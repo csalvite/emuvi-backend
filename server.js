@@ -42,6 +42,7 @@ const {
   getUser,
   editUserAvatar,
   editUserData,
+  editUserPassword,
 } = require('./controllers/user');
 
 /* 
@@ -73,6 +74,15 @@ app.put(
 
 // Editamos username, email y password de Usuario
 app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
+
+// Editamos la contraseña del usuario
+app.put(
+  '/users/:idUser/password',
+  isAuth,
+  userExists,
+  canEditUser,
+  editUserPassword
+);
 
 // Editamos información del usuario (datos personales y de dirección)
 app.put('/users/:idUser/info', isAuth, userExists, canEditUser, editUserData);

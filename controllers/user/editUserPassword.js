@@ -1,11 +1,10 @@
 // PUT -> /users/:idUser/password  Permite editar la contraseña de un usuario
 
 const getDB = require('../../database/getDB');
-
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const editPassword = async (req, res, next) => {
+const editUserPassword = async (req, res, next) => {
   let connection;
 
   try {
@@ -17,6 +16,14 @@ const editPassword = async (req, res, next) => {
     //Se obtiene la contraseña antigua y la nueva.
     const { oldPassword, newPassword } = req.body;
 
+    if (!(oldPassword && newPassword)) {
+      const error = new Error(
+        'Debes indicar la contraseña a cambiar y la nueva'
+      );
+      error.httpStatus = 400;
+      throw error;
+    }
+
     //Obtenemos la contraseña del usuario.
     const [user] = await connection.query(
       `SELECT password FROM user WHERE id = ?`,
@@ -27,7 +34,7 @@ const editPassword = async (req, res, next) => {
     const isValid = await bcrypt.compare(oldPassword, user[0].password);
 
     //Si la contraseña antigua es errónea, lanzamos un error.
-    if (!isvalid) {
+    if (!isValid) {
       const error = new Error('Contraseña incorrecta');
       error.httpStatus = 401;
       throw error;
@@ -53,4 +60,4 @@ const editPassword = async (req, res, next) => {
   }
 };
 
-module.exports = editPassword;
+module.exports = editUserPassword;
