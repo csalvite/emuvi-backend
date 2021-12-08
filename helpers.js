@@ -127,10 +127,25 @@ async function savePhoto(image, type) {
   }
 }
 
+/**
+ * ##############
+ * ## validate ##
+ * ##############
+ */
+async function validate(schema, data) {
+  try {
+    await schema.validateAsync(data);
+  } catch (error) {
+    error.httpStatus = 400;
+    throw error;
+  }
+}
+
 module.exports = {
   generateRandomString,
   sendMail,
   verifyEmail,
   deletePhoto,
   savePhoto,
+  validate,
 };
