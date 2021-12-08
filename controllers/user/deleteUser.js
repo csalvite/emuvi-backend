@@ -14,8 +14,11 @@ const deleteUser = async (req, res, next) => {
     const { password, confirmPassword } = req.body;
 
     //Si no existe los campos contraseña y su respectiva confirmacion muestra error
-    if (!password || !confirmPassword)
-      throw new Error('Debes introducir contraseñas');
+    if (!password || !confirmPassword) {
+      const error = new Error('Debes introducir contraseñas');
+      error.httpStatus = 403;
+      throw error;
+    }
 
     if (password !== confirmPassword)
       throw new Error('La contraseña y su confirmacion no coinciden');
