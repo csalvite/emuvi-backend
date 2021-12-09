@@ -38,8 +38,8 @@ async function newProduct(req, res, next) {
       //nos quedamos con 5 fotos
       for (const photo of Object.values(req.files).slice(0, 5)) {
         // Guardamos la foto en disco y obtenemos su nombre.
-        const photoName = await savePhoto(photo);
-
+        const photoName = await savePhoto(photo, 1);
+        console.log(photoName);
         // Guardamos la foto en la tabla de fotos_producto.
         await connection.query(
           `INSERT INTO product_photo (name, idProduct) VALUES (?, ?)`,
