@@ -69,12 +69,12 @@ const getUser = async (req, res, next) => {
     };
 
     // Cargamos un array de objetos con las propiedades de cada valoracion
+    userVotes.data = [];
     if (opinions.length > 1) {
-      userVotes.data = [];
-      for (let i = 0; i < products.length; i++) {
+      for (let i = 0; i < opinions.length; i++) {
         userVotes.data.push({
+          name: opinions[i].name,
           userAvatar: opinions[i].avatar,
-          userName: opinions[i].name,
           vote: opinions[i].vote,
           comment: opinions[i].comment,
           date: opinions[i].date,
@@ -87,6 +87,9 @@ const getUser = async (req, res, next) => {
       name: user[0].name,
       lastname: user[0].lastname,
       avatar: user[0].avatar,
+      city: user[0].city,
+      province: user[0].province,
+      postalCode: user[0].postalCode,
     };
 
     // Si el usuario quiere ver su perfil, añadimos info
@@ -97,9 +100,6 @@ const getUser = async (req, res, next) => {
       userInfo.biography = user[0].biography;
       userInfo.phone = user[0].phone;
       userInfo.street = user[0].street;
-      userInfo.postalCode = user[0].postalCode;
-      userInfo.city = user[0].city;
-      userInfo.province = user[0].province;
       userInfo.latitude = user[0].latitude;
       userInfo.longitude = user[0].longitude;
     }

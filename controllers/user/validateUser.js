@@ -44,26 +44,17 @@ const validateUser = async (req, res, next) => {
 
     // Insertamos los datos que nos proporciona en el formulario de registro y activación
 
-    // Si no existe alguno de los "not null"
+    // Si no existe alguno de los ""
     if (!(name && lastname && birthday)) {
       const error = new Error(
         'Debes introducir todos los datos marcados como obligatorios'
       );
-      error.httpStatus = 401; // yo que sé
+      error.httpStatus = 400; // yo que sé
       throw error;
     }
 
     // Si existe un avatar, guardamos la imagen en disco
     const avatarName = await savePhoto(req.files.avatar, 0);
-
-    // Si no existe un avatar insertamos el nuestro por defecto
-    if (!req.files && !req.files.avatar) {
-      const defaultAvatar = path.join(__dirname, UPLOADS_DIRECTORY);
-      const avatarName = await savePhoto(
-        defaultAvatar + '/defaultAvatar.jpg',
-        0
-      );
-    }
 
     // Si están todos los datos obligatorios, actualizamos el usuario final
     await connection.query(

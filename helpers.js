@@ -83,8 +83,7 @@ async function sendMail({ to, subject, body }) {
 async function verifyEmail(email, registrationCode) {
   const emailBody = `
   <h2> Te acabas de registrar en EMUVI </h2>
-  <p> Pulsa el siguiente enlace para verificar tu cuenta. </p>
-  <p> Link para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
+  <p> Pulsa el siguiente enlace para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
   
   <img src="${imgToBase64(emailPathImage)}" />`;
 
@@ -185,6 +184,7 @@ async function deletePhoto(photoName) {
     throw new Error('Error al eliminar la imagen del servidor');
   }
 }
+
 /**
  * ###############
  * ## savePhoto ##
