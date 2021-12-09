@@ -79,6 +79,7 @@ CREATE TABLE user_reserve_product(
     idProduct INT NOT NULL,
     idUserBuyer INT NOT NULL,
     reserveStatus ENUM('pendiente', 'aceptada', 'denegada') DEFAULT 'pendiente',
+    createdAt DATETIME NOT NULL,
     FOREIGN KEY (idUserOwner) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (idProduct) REFERENCES product(id) ON DELETE CASCADE,
     FOREIGN KEY (idUserBuyer) REFERENCES user(id) ON DELETE CASCADE

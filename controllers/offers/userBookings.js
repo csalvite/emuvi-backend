@@ -12,6 +12,18 @@ const userBookings = async (req, res, next) => {
 
     const { idUser } = req.params;
 
+    const { order, direction } = req.query;
+
+    const validOrderOptions = ['reserveStatus', 'createdAt'];
+
+    const validDirectionOptions = ['DESC', 'ASC'];
+
+    const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
+
+    const orderDirection = validDirectionOptions.includes(direction)
+      ? direction
+      : 'ASC';
+
     const [user] = await connection.query(
       `select distinctrow user.id as idBuyer, concat(user.name, " ", user.lastname) as buyerName,
             (select concat(user.name, " ",user.lastname)
@@ -21,10 +33,11 @@ const userBookings = async (req, res, next) => {
             (select product.name
             from product
             where product.id = user_reserve_product.idProduct) as productName,
-        user_reserve_product.reserveStatus
+        user_reserve_product.reserveStatus, user_reserve_product.createdAt
         from user inner join user_reserve_product
             on (user.id = user_reserve_product.idUserBuyer)
-        where user_reserve_product.idUserBuyer = ?;`,
+        where user_reserve_product.idUserBuyer = ?
+        order by ${orderBy} ${orderDirection};`,
       [idUser]
     );
 
@@ -41,6 +54,7 @@ const userBookings = async (req, res, next) => {
         seller: user[i].sellerName,
         product: user[i].productName,
         reserveStatus: user[i].reserveStatus,
+        createdAt: user[i].createdAt,
       });
     }
 
