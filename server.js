@@ -46,6 +46,18 @@ const {
   userProducts,
 } = require('./controllers/user');
 
+/*
+ * ##############################
+ * ## Controladores de ofertas ##
+ * ##############################
+ * */
+
+const {
+  userBookings,
+  userSales,
+  deleteUserBookings,
+} = require('./controllers/offers/');
+
 /* 
 ######################
 ### Endpoints User ###
@@ -94,6 +106,47 @@ app.delete('/users/:idUser', deleteUser);
 // Mi perfil -> Mis productos
 app.get('/users/:idUser/products', isAuth, userExists, userProducts);
 
+/* 
+  ##########################
+  ### Endpoints Products ###
+  ##########################
+*/
+
+/* app.put(
+  '/product/:idProduct',
+  isAuth,
+  productExits,
+  canEditProduct,
+  editProduct
+); */
+
+/* 
+  ########################
+  ### Endpoints Offers ###
+  ########################
+*/
+
+// Perfil de usuario -> sus ofertas enviadas (las reservas)
+app.get(
+  '/users/:idUser/bookings',
+  isAuth,
+  userExists,
+  canEditUser,
+  userBookings
+);
+
+// Perfil de usuario -> ofertas recibidas
+app.get('/users/:idUser/offers', isAuth, userExists, canEditUser, userSales);
+
+// Elimina las reservas en estado "denegada" del usuario
+app.delete(
+  '/users/:idUser/bookings',
+  isAuth,
+  userExists,
+  canEditUser,
+  deleteUserBookings
+);
+
 /*
   #####################################
   ### Middlewares Error y Not Found ###
@@ -108,7 +161,7 @@ app.use((error, req, res, _) => {
   });
 });
 
-//middleware not found
+// Middleware not found
 
 app.use((req, res) => {
   res.status(404).send({

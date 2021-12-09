@@ -20,7 +20,6 @@ const {
 
 // Creamos la ruta absoluta al directorio de subida de ficheros.
 const uploadsDir = path.join(__dirname, UPLOADS_DIRECTORY);
-const emailImages = path.join(__dirname, EMAIL_PHOTOS_DIRECTORY);
 
 // Para añadir la imagen al correo necesitamos tenerla en base64 - Funcion que devuelve el base64:
 const emailPathImage = path.join(
@@ -53,7 +52,7 @@ function generateRandomString(leght) {
  * ##############
  */
 
-async function sendMail({ to, subject, body }) {
+async function sendMail({ to, subject, body, imageEmail }) {
   try {
     //Preprar el mensaje
     const msg = {
@@ -80,21 +79,19 @@ async function sendMail({ to, subject, body }) {
  * #################
  */
 
+// const imageEmail = imgToBase64(emailPathImage);
+
 async function verifyEmail(email, registrationCode) {
   const emailBody = `
   <h2> Te acabas de registrar en EMUVI </h2>
   <p> Pulsa el siguiente enlace para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
-  
-  <img src="${imgToBase64(emailPathImage)}" />`;
+  `;
 
   //Enviamos el mensaje al correo del usuario.
   await sendMail({
     to: email,
     subject: 'Activa tu cuenta',
     body: emailBody,
-    html: `
-    <img src="data:image/jpeg;base64,${imgToBase64(emailPathImage)}" />    
-    `,
   });
 }
 
@@ -241,6 +238,9 @@ module.exports = {
   generateRandomString,
   sendMail,
   verifyEmail,
+  newOffer,
+  offerAccepted,
+  offerDenied,
   deletePhoto,
   savePhoto,
   validate,

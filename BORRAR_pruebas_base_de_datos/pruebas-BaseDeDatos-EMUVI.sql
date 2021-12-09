@@ -27,20 +27,20 @@ select product.name, product.price, product.category, user.name, user.id
 from user left join product
 	on (user.id = product.idUser)
 where user.id = 2 and product.sold is false;
-
+use emuvi;
 /* Soy usuario con id 2 -> Estoy en Mi perfil -> Veo apartado MIS OFERTAS ENVIADAS */
-select distinctrow user.id as idCompra, user.name as NombreCompra,
-	(select user.name
+select distinctrow user.id as idBuyer, concat(user.name, " ", user.lastname) as buyerName,
+	(select concat(user.name, " ",user.lastname)
 		from user
         where user.id = user_reserve_product.idUserOwner
-    ) as UsuarioVendedor,
+    ) as sellerName,
     (select product.name
     from product
-    where product.id = user_reserve_product.idProduct) as NombreProducto,
+    where product.id = user_reserve_product.idProduct) as productName,
     user_reserve_product.reserveStatus
 from user inner join user_reserve_product
 	on (user.id = user_reserve_product.idUserBuyer)
-where user_reserve_product.idUserBuyer = 2;
+where user_reserve_product.idUserBuyer = 50;
 
 /* Como usuario 2 -> Veo MIS OFERTAS RECIBIDAS */
 select distinctrow user.id as idVendedor, user.name as NombreVendedor,
@@ -70,7 +70,6 @@ from user inner join user_vote
 	on (user.id = user_vote.idUser)
 where user_vote.idUserVoted = 2;
 
-
 /* Como usuario 2 -> Veo las valoraciones que he dejado */
 select user.name, user_vote.vote, user_vote.comment, user_vote.date,
 	(select user.name from user where user.id = user_vote.idUserVoted) as VotoAUsuario
@@ -99,5 +98,30 @@ select user.avatar, user.name,
 from user inner join product
 	on (user.id = product.idUser)
 where product.id = 5;
+
+
+select * from product
+select * from product_photo;
+
+insert into product_photo(name, idProduct)
+values('foto.png', 2)
+
+select user.name, user.avatar, user_vote.vote, user_vote.comment, user_vote.date
+        from user inner join user_vote
+          on (user.id = user_vote.idUser)
+        where user_vote.idUserVoted = 2
+        
+        
+select * from user
+
+
+
+
+use emuvi;
+
+select user.name, user.avatar, user_vote.vote, user_vote.comment, user_vote.date
+        from user inner join user_vote
+          on (user.id = user_vote.idUser)
+        where user_vote.idUserVoted = 2
 
 
