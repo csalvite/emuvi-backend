@@ -56,7 +56,18 @@ const {
   userBookings,
   userSales,
   deleteUserBookings,
+  homeLists,
+  deleteUserSales,
 } = require('./controllers/offers/');
+
+/* 
+#####################################
+### Endpoints Inicio de la página ###
+#####################################
+*/
+
+// Carga dos listados con las categorias y los 10 productos más nuevos
+app.get('/', homeLists);
 
 /* 
 ######################
@@ -145,6 +156,15 @@ app.delete(
   userExists,
   canEditUser,
   deleteUserBookings
+);
+
+// Elimina las ofertas recibidas por el usuario si recibe un query param indicando qué estado de oferta o qué id quiere borrar
+app.delete(
+  '/users/:idUser/offers',
+  isAuth,
+  userExists,
+  canEditUser,
+  deleteUserSales
 );
 
 /*

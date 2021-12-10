@@ -1,5 +1,5 @@
 /* 
-    Retorna un listado de las ofertas enviadas por el usuario
+    Retorna un listado de las ofertas enviadas por el usuario, puede ordenarlas por estado de reserva y por fecha de creación
 */
 
 const getDB = require('../../database/getDB');

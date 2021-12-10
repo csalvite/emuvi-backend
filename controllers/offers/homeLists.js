@@ -11,12 +11,15 @@ const homeLists = async (req, res, next) => {
 
     const { order, direction } = req.query;
 
-    const validOrderOptions = ['createAt'];
+    const validOrderOptions = ['createdAt'];
 
     const validDirectionOptions = ['DESC', 'ASC'];
 
-    const orderBy = validOrderOptions.includes(order) ? order : 'createAt';
+    // Esto está guay, pero lo que hace es que si no indican un orden (que solo tiene como opciones válidas "createdAt")
+    // por defecto usará createAt, en este caso no nos haría falta, podríamos usar directamente validOrderOptions en el lugar de orderBy :D
+    const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
 
+    // Aqui por ejemplo se puede indicar que la dirección sea DESC o ASC, en este indicas que por defecto sea ASC, aqui está guay
     const orderDirection = validDirectionOptions.includes(direction)
       ? direction
       : 'ASC';
@@ -24,49 +27,60 @@ const homeLists = async (req, res, next) => {
     // Lista de categorías en página de inicio.
 
     const [category] = await connection.query(
-      `
-       SELECT category FROM product WHERE product.category = ?
-       GROUP BY product.createdAt
-       ORDER BY ${orderBy} ${orderDirection}
-       `,
-      [`%${name}%``%${search}%`, `%${search}%`]
+      `SELECT distinct(category) FROM product`
     );
+
+    // WHERE product.category = ?
+    // [`%${name}%``%${search}%`, `%${search}%`]
 
     let categories = [];
     for (let i = 0; i < category.length; i++) {
       categories.push({
-        name: category[i].categoryName,
+        name: category[i].category, // categoryName
       });
     }
 
-    res.send({
+    // El res.send debería ir al final ya que solo se envía una vez
+    /* res.send({
       status: 'OK',
       data: [categories],
-    });
+    }); */
 
     // Lista de productos destacados en página de inicio.
 
     const [product] = await connection.query(
       `
-        SELECT product.id, product.name, product.price, product.createdAt, product.sold,
+        SELECT product.id, product.name, product.price, product.createdAt, product.sold
         FROM product
-        WHERE product.name = ?
-        GROUP BY product.createdAt
+        WHERE product.sold = 0
+        GROUP BY product.id, product.name, product.price, product.createdAt, product.sold
         ORDER BY ${orderBy} ${orderDirection}
-                `,
-      [`%${name}%``%${search}%`, `%${search}%`]
+        LIMIT 10
+      `
     );
 
+    // LIMIT 10 recogerá los 10 primeros resultados de la consulta
+    // Como vamos a recoger los productos con fecha de creación (createdAt) más nuevos, no hace falta
+    // WHERE product.name = ?
+    // [`%${name}%``%${search}%`, `%${search}%`]
+
+    // Ojooo esto está muy guay, funciona, pero podemos sacarlo ya en la consulta xD
     let featuredProducts = [];
     for (let i = 0; i < 10; i++) {
-      product.push({
-        name: product[i].productName,
+      featuredProducts.push({
+        // product - es featuredProducts
+        name: product[i].name, // productName - Se sacaría solo name de product
+        // molaría añadir más propiedades, rollo precio, imágenes, etc
       });
     }
 
+    // Añadí en los resultados las categorias
     res.send({
       status: 'OK',
-      data: [featuredProducts],
+      data: {
+        featuredProducts,
+        categories,
+      },
     });
   } catch (error) {
     next(error);
