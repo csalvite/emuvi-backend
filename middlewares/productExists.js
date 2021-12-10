@@ -13,7 +13,6 @@ const productExists = async (req, res, next) => {
       const error = new Error('El producto no existe');
       error.httpStatus = 404;
       throw error;
-      next();
     }
   } catch (error) {
     next(error);
