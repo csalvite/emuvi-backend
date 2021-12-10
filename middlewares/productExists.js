@@ -5,7 +5,7 @@ const productExists = async (req, res, next) => {
     connection = await getDB();
     const { idProduct } = req.params;
     const [product] = await connection.query(
-      `SELECT id FROM product 
+      `SELECT id FROM product
         WHERE id = ?`,
       [idProduct]
     );
@@ -14,6 +14,7 @@ const productExists = async (req, res, next) => {
       error.httpStatus = 404;
       throw error;
     }
+    next();
   } catch (error) {
     next(error);
   } finally {
