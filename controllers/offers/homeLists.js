@@ -63,6 +63,7 @@ const homeLists = async (req, res, next) => {
     // Como vamos a recoger los productos con fecha de creación (createdAt) más nuevos, no hace falta
     // WHERE product.name = ?
     // [`%${name}%``%${search}%`, `%${search}%`]
+    // este comentario es por pura prueba, he hecho un merge de database a main, puto loco, no?
 
     // Ojooo esto está muy guay, funciona, pero podemos sacarlo ya en la consulta xD
     let featuredProducts = [];
