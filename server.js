@@ -63,12 +63,12 @@ const {
 } = require('./controllers/offers/');
 
 /*
- * ##############################
+ * ################################
  * ## Controladores de productos ##
- * ##############################
+ * ################################
  * */
 
-const deleteProduct = require('./controllers/product');
+const { deleteProduct, lookingProduct } = require('./controllers/product');
 
 /* 
 #####################################
@@ -140,6 +140,9 @@ app.get('/users/:idUser/products', isAuth, userExists, userProducts);
   canEditProduct,
   editProduct
 ); */
+
+// Devuelve datos de un producto en concreto
+app.get('/products/:idProduct', productExists, lookingProduct);
 
 app.delete(
   '/products/:idProduct',
