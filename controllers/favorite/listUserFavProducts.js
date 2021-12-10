@@ -27,7 +27,8 @@ const favProducts = async (req, res, next) => {
 
     if (search) {
       [products] = await connection.query(
-        `SELECT id, idUser, idProduct, user.name, user.id
+        `SELECT user_favorite_product.id, user_favorite_product.idUser, user_favorite_product.idProduct, 
+                  user_favorite_product.user.name, user_favorite_product.user.id
                   FROM user LEFT JOIN user_favorite_product on (user.id = user_favorite_product.idUser)
                   WHERE user.id = ? and product.sold is false
                   ORDER BY ${orderBy} ${orderDirection}`,
