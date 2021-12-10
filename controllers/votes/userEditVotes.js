@@ -1,12 +1,10 @@
 const getDB = require('../../database/getDB');
 
-const userVotes = async (req, res, next) => {
+const userEditVotes = async (req, res, next) => {
     let connection;
 
     try {
         connection = await getDB();
-
-        const { idUser } = req.params;
 
         const [votes] = await connection.query(
             `SELECT id, comment, vote, DATETIME, idUserVoted, idUser, createdAt from user_vote where idUser = ?`,
@@ -24,4 +22,4 @@ const userVotes = async (req, res, next) => {
     }
 };
 
-module.exports = userVotes;
+module.exports = userEditVotes;

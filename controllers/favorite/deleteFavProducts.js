@@ -13,7 +13,7 @@ const deleteFavProduct = async (req, res, next) => {
      AND id_product = ?`,
             [req.auth.id, idProduct]
         );
-        if (favProduct < 1) {
+        if (favProduct.length < 1) {
             const error = new Error('No tienes el producto en tus favoritos');
             error.httpStatus = 404;
             throw error;
