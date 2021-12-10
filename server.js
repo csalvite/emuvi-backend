@@ -36,16 +36,16 @@ const canEditUser = require('./middlewares/canEditUser');
  * */
 
 const {
-  loginUser,
-  editUser,
-  newUser,
-  validateUser,
-  deleteUser,
-  getUser,
-  editUserAvatar,
-  editUserData,
-  editUserPassword,
-  userProducts,
+    loginUser,
+    editUser,
+    newUser,
+    validateUser,
+    deleteUser,
+    getUser,
+    editUserAvatar,
+    editUserData,
+    editUserPassword,
+    userProducts,
 } = require('./controllers/user');
 
 /*
@@ -55,12 +55,13 @@ const {
  * */
 
 const {
-  userBookings,
-  userSales,
-  deleteUserBookings,
-  homeLists,
-  deleteUserSales,
-  newOffer,
+    userBookings,
+    userSales,
+    deleteUserBookings,
+    homeLists,
+    deleteUserSales,
+    newOffer,
+    deniedOffer,
 } = require('./controllers/offers/');
 
 /*
@@ -70,9 +71,9 @@ const {
  * */
 
 const {
-  deleteProduct,
-  lookingProduct,
-  editProduct,
+    deleteProduct,
+    detailedProduct,
+    editProduct,
 } = require('./controllers/product');
 
 /* 
@@ -104,11 +105,11 @@ app.get('/users/:idUser', isAuth, userExists, getUser); // Si el usuario es anó
 
 // Actualizamos el avatar de un usuario
 app.put(
-  '/users/:idUser/avatar',
-  isAuth,
-  userExists,
-  canEditUser,
-  editUserAvatar
+    '/users/:idUser/avatar',
+    isAuth,
+    userExists,
+    canEditUser,
+    editUserAvatar
 );
 
 // Editamos username, email y password de Usuario
@@ -116,11 +117,11 @@ app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
 
 // Editamos la contraseña del usuario
 app.put(
-  '/users/:idUser/password',
-  isAuth,
-  userExists,
-  canEditUser,
-  editUserPassword
+    '/users/:idUser/password',
+    isAuth,
+    userExists,
+    canEditUser,
+    editUserPassword
 );
 
 // Editamos información del usuario (datos personales y de dirección)
@@ -140,23 +141,23 @@ app.get('/users/:idUser/products', isAuth, userExists, userProducts);
 
 // Edita un producto
 app.put(
-  '/product/:idProduct',
-  isAuth,
-  productExists,
-  canEditProduct,
-  editProduct
+    '/product/:idProduct',
+    isAuth,
+    productExists,
+    canEditProduct,
+    editProduct
 );
 
 // Devuelve datos de un producto en concreto
-app.get('/products/:idProduct', productExists, lookingProduct);
+app.get('/products/:idProduct', productExists, detailedProduct);
 
 // Borra un producto seleccionado por el usuario propietario
 app.delete(
-  '/products/:idProduct',
-  isAuth,
-  productExists,
-  canEditProduct,
-  deleteProduct
+    '/products/:idProduct',
+    isAuth,
+    productExists,
+    canEditProduct,
+    deleteProduct
 );
 
 /* 
@@ -167,11 +168,11 @@ app.delete(
 
 // Perfil de usuario -> sus ofertas enviadas (las reservas)
 app.get(
-  '/users/:idUser/bookings',
-  isAuth,
-  userExists,
-  canEditUser,
-  userBookings
+    '/users/:idUser/bookings',
+    isAuth,
+    userExists,
+    canEditUser,
+    userBookings
 );
 
 // Perfil de usuario -> ofertas recibidas
@@ -179,29 +180,41 @@ app.get('/users/:idUser/offers', isAuth, userExists, canEditUser, userSales);
 
 // Endpoint que crea una nueva oferta
 app.post(
-  '/offers/:idProduct/new/:idUser',
-  isAuth,
-  userExists,
-  productExists,
-  newOffer
+    '/offers/:idProduct/new/:idUser',
+    isAuth,
+    userExists,
+    productExists,
+    newOffer
+);
+
+// Acepta la reserva
+app.post('/users/:idUser/offers/:idOffer/accept');
+
+// Deniega la reserva
+app.post(
+    '/users/:idUser/offers/:idOffer/deny',
+    isAuth,
+    userExists,
+    canEditUser,
+    deniedOffer
 );
 
 // Elimina las reservas en estado "denegada" del usuario
 app.delete(
-  '/users/:idUser/bookings',
-  isAuth,
-  userExists,
-  canEditUser,
-  deleteUserBookings
+    '/users/:idUser/bookings',
+    isAuth,
+    userExists,
+    canEditUser,
+    deleteUserBookings
 );
 
 // Elimina las ofertas recibidas por el usuario si recibe un query param indicando qué estado de oferta o qué id quiere borrar
 app.delete(
-  '/users/:idUser/offers',
-  isAuth,
-  userExists,
-  canEditUser,
-  deleteUserSales
+    '/users/:idUser/offers',
+    isAuth,
+    userExists,
+    canEditUser,
+    deleteUserSales
 );
 
 /*
@@ -211,22 +224,22 @@ app.delete(
 */
 
 app.use((error, req, res, _) => {
-  console.error(error);
-  res.status(error.httpStatus || 500).send({
-    status: 'Error',
-    message: error.message,
-  });
+    console.error(error);
+    res.status(error.httpStatus || 500).send({
+        status: 'Error',
+        message: error.message,
+    });
 });
 
 // Middleware not found
 
 app.use((req, res) => {
-  res.status(404).send({
-    status: 'error',
-    message: 'Not Found',
-  });
+    res.status(404).send({
+        status: 'error',
+        message: 'Not Found',
+    });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server listening at http://localhost:${PORT}`);
+    console.log(`Server listening at http://localhost:${PORT}`);
 });
