@@ -52,7 +52,7 @@ function generateRandomString(leght) {
  * ##############
  */
 
-async function sendMail({ to, subject, body, imageEmail }) {
+async function sendMail({ to, subject, body }) {
   try {
     //Preprar el mensaje
     const msg = {
@@ -101,11 +101,11 @@ async function verifyEmail(email, registrationCode) {
  * #################
  */
 
-async function newOffer({ email, userBuyer, productName, idUser }) {
+async function newOfferMail(email, userBuyer, productName, idUser) {
   const emailBody = `
     <p> El usuario ${userBuyer} quiere comprar tu producto ${productName}!<p>
     <p> Puedes gestionar tus ofertas a través del siguiente enlace: </p>
-    <p> ${PUBLIC_HOST}/users/${idUser}/ </p>
+    <p> ${PUBLIC_HOST}/users/${idUser}/offers </p>
   `;
 
   await sendMail({
@@ -121,15 +121,15 @@ async function newOffer({ email, userBuyer, productName, idUser }) {
  * ####################
  */
 
-async function offerAccepted({
+async function offerAccepted(
   email,
   sellerUser,
   productName,
   street,
   time,
   date,
-  idUser,
-}) {
+  idUser
+) {
   const emailBody = `
     <p> El usuario ${sellerUser}, propietario del producto ${productName}, ha aceptado tu propuesta de compra </p>
     <p> La compra se realizará en: <strong>${street}</strong> a las <strong>${time}</strong> el día ${date} </p>
@@ -150,7 +150,7 @@ async function offerAccepted({
  * ####################
  */
 
-async function offerDenied({ email, sellerUser, productName }) {
+async function offerDenied(email, sellerUser, productName) {
   const emailBody = `
     <p> Lamentamos comunicarte que el usuario ${sellerUser} ha denegado la compra del producto ${productName}. </p>
     <p> Pero no te preocupes, hay más productos en nuestro catálogo a la espera! </p>
@@ -238,7 +238,7 @@ module.exports = {
   generateRandomString,
   sendMail,
   verifyEmail,
-  newOffer,
+  newOfferMail,
   offerAccepted,
   offerDenied,
   deletePhoto,

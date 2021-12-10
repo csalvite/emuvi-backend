@@ -60,6 +60,7 @@ const {
   deleteUserBookings,
   homeLists,
   deleteUserSales,
+  newOffer,
 } = require('./controllers/offers/');
 
 /*
@@ -175,6 +176,15 @@ app.get(
 
 // Perfil de usuario -> ofertas recibidas
 app.get('/users/:idUser/offers', isAuth, userExists, canEditUser, userSales);
+
+// Endpoint que crea una nueva oferta
+app.post(
+  '/offers/:idProduct/new/:idUser',
+  isAuth,
+  userExists,
+  productExists,
+  newOffer
+);
 
 // Elimina las reservas en estado "denegada" del usuario
 app.delete(
