@@ -68,7 +68,11 @@ const {
  * ################################
  * */
 
-const { deleteProduct, lookingProduct } = require('./controllers/product');
+const {
+  deleteProduct,
+  lookingProduct,
+  editProduct,
+} = require('./controllers/product');
 
 /* 
 #####################################
@@ -133,17 +137,19 @@ app.get('/users/:idUser/products', isAuth, userExists, userProducts);
   ##########################
 */
 
-/* app.put(
+// Edita un producto
+app.put(
   '/product/:idProduct',
   isAuth,
-  productExits,
+  productExists,
   canEditProduct,
   editProduct
-); */
+);
 
 // Devuelve datos de un producto en concreto
 app.get('/products/:idProduct', productExists, lookingProduct);
 
+// Borra un producto seleccionado por el usuario propietario
 app.delete(
   '/products/:idProduct',
   isAuth,
