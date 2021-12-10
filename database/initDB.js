@@ -7,7 +7,7 @@ async function main() {
   let connection;
   try {
     connection = await getDB();
-
+    await connection.query('SET FOREIGN_KEY_CHECKS = 1');
     await connection.query('DROP TABLE IF EXISTS user');
     await connection.query('DROP TABLE IF EXISTS product');
     await connection.query('DROP TABLE IF EXISTS product_photo');
