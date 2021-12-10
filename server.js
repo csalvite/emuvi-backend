@@ -23,6 +23,8 @@ app.use(fileUpload());
  * #################
  * */
 
+const canEditProduct = require('./middlewares/canEditProduct');
+const productExists = require('./middlewares/productExists');
 const isAuth = require('./middlewares/isAuth');
 const userExists = require('./middlewares/userExists');
 const canEditUser = require('./middlewares/canEditUser');
@@ -59,6 +61,14 @@ const {
   homeLists,
   deleteUserSales,
 } = require('./controllers/offers/');
+
+/*
+ * ##############################
+ * ## Controladores de productos ##
+ * ##############################
+ * */
+
+const deleteProduct = require('./controllers/product');
 
 /* 
 #####################################
@@ -130,6 +140,14 @@ app.get('/users/:idUser/products', isAuth, userExists, userProducts);
   canEditProduct,
   editProduct
 ); */
+
+app.delete(
+  '/products/:idProduct',
+  isAuth,
+  productExists,
+  canEditProduct,
+  deleteProduct
+);
 
 /* 
   ########################
