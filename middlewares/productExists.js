@@ -6,11 +6,11 @@ const productExists = async (req, res, next) => {
     const { idProduct } = req.params;
     const [product] = await connection.query(
       `SELECT id FROM product
-        WHERE id = ?`,
+        WHERE id = ? and sold is false`,
       [idProduct]
     );
     if (product.length < 1) {
-      const error = new Error('El producto no existe');
+      const error = new Error('El producto no existe o está vendido');
       error.httpStatus = 404;
       throw error;
     }
