@@ -1,6 +1,6 @@
 //const mysql = require('mysql2');
 const getDB = require('./getDB');
-np;
+
 //const faker = require('faker');
 //const bcrypt = require('bcrypt');
 async function main() {
