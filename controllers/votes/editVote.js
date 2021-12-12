@@ -1,3 +1,4 @@
+//app.post('/vote/:id', validAuth, canEditVote, editVote');
 const getDB = require('../../database/getDB');
 
 const userEditVotes = async (req, res, next) => {
