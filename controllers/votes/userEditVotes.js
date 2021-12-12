@@ -5,15 +5,30 @@ const userEditVotes = async (req, res, next) => {
 
     try {
         connection = await getDB();
-
-        const [votes] = await connection.query(
-            `SELECT id, comment, vote, DATETIME, idUserVoted, idUser, createdAt from user_vote where idUser = ?`,
-            [idUserVoted]
+        const { idVote } = req.params;
+        const { vote, comment } = req.body;
+        const options = [0, 1, 2, 3, 4, 5];
+        7;
+        if (!vote) {
+            const error = new Error('Tienes que incluir un voto');
+            error.httpStatus = 400;
+            throw error;
+        }
+        if (!options.includes(Number(vote))) {
+            const error = new Error(
+                'Tiene que emitir tu voto entre un numero entero del 0 al 5'
+            );
+            throw error;
+        }
+        //Actualizamos el voto
+        await connection.query(
+            `UPDATE user_vote SET vote= ?, comment = ? WHERE id = ?`,
+            [vote, comment, idVote]
         );
 
         res.send({
             status: 'ok',
-            message: 'Tu votación se ha realizado correctamente.',
+            message: 'Tu voto se ha cambiado correctamente',
         });
     } catch (error) {
         next(error);
