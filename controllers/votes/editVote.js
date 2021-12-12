@@ -9,7 +9,7 @@ const editVote = async (req, res, next) => {
         const { idVote } = req.params;
         const { vote, comment } = req.body;
         const options = [0, 1, 2, 3, 4, 5];
-        7;
+
         if (!vote) {
             const error = new Error('Tienes que incluir un voto');
             error.httpStatus = 400;

@@ -1,4 +1,3 @@
-// Middleware que comprueba si el usuario es el propietario del producto
 const getDB = require('../database/getDB');
 
 const canEditVote = async (req, res, next) => {
@@ -19,6 +18,8 @@ const canEditVote = async (req, res, next) => {
             const error = new Error(
                 'No hay un usuario propietario para el voto'
             );
+            error.httpStatus = 400;
+            throw error;
         }
 
         if (idUserowner[0].idUser !== idReqUser) {
