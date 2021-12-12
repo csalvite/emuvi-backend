@@ -27,9 +27,9 @@ async function sendVote(req, res, next) {
 
             await connection.query(
                 `
-    INSERT INTO user_vote (vote, comment, idUser, idUserVoted)
+    INSERT INTO user_vote (vote, comment, idUser, idUserVoted, date)
     VALUES (?, ?, ?, ?)`,
-                [vote, comment, req.auth.id, idUser]
+                [vote, comment, req.auth.id, idUser, new Date()]
             );
             res.send({
                 status: 'OK',
