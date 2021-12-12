@@ -29,4 +29,4 @@ async function addFavProduct(req, res, next) {
         if (connection) connection.release();
     }
 }
-module.exports = { addFavProduct };
+module.exports = addFavProduct;
