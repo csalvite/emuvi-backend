@@ -5,7 +5,7 @@ async function addFavProduct(req, res, next) {
         connection = await getDB();
         const { idProduct } = req.params;
         const idReqUser = req.userAuth.id;
-        const [Productexits] = await connection.query(
+        const [favexits] = await connection.query(
             `
             SELECT * FROM user_favorite_product WHERE idUser = ? AND idProduct = ?`,
             [req.auth.id, idProduct]
