@@ -26,7 +26,7 @@ const addProductPhoto = async (req, res, next) => {
             throw error;
         }
         //obtenemos el nombre de la foto de la base de datos.
-        const photoName = await savePhoto(req.files.avatar, 1);
+        const photoName = await savePhoto(req.files, 1);
         await connection.query(
             `INSERT INTO product_photo (name, idProduct) VALUES (?, ?)`,
             [photoName, idProduct]
