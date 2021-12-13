@@ -4,11 +4,14 @@ const { savePhoto } = require('../../helpers');
 
 const addProductPhoto = async (req, res, next) => {
     let connection;
+
     try {
         connection = await getDB();
+
         const { idProduct } = req.params;
         //Si no hay foto, error.
-        if (!(req.files || req.files.avatar)) {
+
+        if (!(req.files && req.files.photo)) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
@@ -27,11 +30,13 @@ const addProductPhoto = async (req, res, next) => {
             throw error;
         }
         //obtenemos el nombre de la foto de la base de datos.
-        const photoName = await savePhoto(req.files, 1);
+        const photoName = await savePhoto(req.files.photo, 1);
+
         await connection.query(
             `INSERT INTO product_photo (name, idProduct) VALUES (?, ?)`,
             [photoName, idProduct]
         );
+
         res.send({
             status: 'ok',
             message: 'La foto ha sido añadida correctamente.',

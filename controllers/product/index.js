@@ -5,7 +5,6 @@ const addProductPhoto = require('./addProductPhoto');
 const deleteProductPhoto = require('./deleteProductPhoto');
 const listProducts = require('./listProducts');
 const newProduct = require('./newProduct');
-const onSaleProducts = require('./onSaleProducts');
 
 module.exports = {
     deleteProduct,
@@ -15,5 +14,4 @@ module.exports = {
     deleteProductPhoto,
     listProducts,
     newProduct,
-    onSaleProducts,
 };

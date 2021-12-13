@@ -81,7 +81,6 @@ const {
     deleteProductPhoto,
     listProducts,
     newProduct,
-    onSaleProducts,
 } = require('./controllers/product');
 
 /* 
@@ -165,6 +164,15 @@ app.get('/products', listProducts);
 // Nuevo producto
 app.post('/products/new', isAuth, newProduct);
 
+// Añade fotos a un producto
+app.post(
+    '/products/:idProduct/addphoto',
+    isAuth,
+    productExists,
+    canEditProduct,
+    addProductPhoto
+);
+
 // Edita un producto
 app.put(
     '/products/:idProduct',
@@ -193,6 +201,15 @@ app.delete(
     productExists,
     canEditProduct,
     deleteProduct
+);
+
+// Borra las imagenes de un producto por el usuario propietario
+app.delete(
+    '/products/:idProduct/photos/:idImg',
+    isAuth,
+    productExists,
+    canEditProduct,
+    deleteProductPhoto
 );
 
 /* 
