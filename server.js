@@ -47,6 +47,7 @@ const {
     editUserPassword,
     userProducts,
     getPrivateUser,
+    confirmNewUserMail,
 } = require('./controllers/user');
 
 /*
@@ -123,8 +124,11 @@ app.put(
     editUserAvatar
 );
 
-// Editamos username, email y password de Usuario
+// Editamos username e email de Usuario
 app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
+
+// Activamos de nuevo el usuario con nuevo correo
+app.post('/users/mail/:registrationCode', confirmNewUserMail);
 
 // Editamos la contraseña del usuario
 app.put(

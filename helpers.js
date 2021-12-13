@@ -73,6 +73,25 @@ async function sendMail({ to, subject, body }) {
 
 /**
  * #################
+ * ## changeEmail ##
+ * #################
+ */
+
+async function changeEmail(email, registrationCode) {
+    const emailBody = `
+    <h2> Confirmación de cambio de correo </h2>
+    <p> Pulsa en el siguiente enlace para activar tu cuenta con el nuevo correo proporcionado ${PUBLIC_HOST}/users/mail/${registrationCode} </p>
+    `;
+
+    await sendMail({
+        to: email,
+        subject: 'Activa tu cuenta',
+        body: emailBody,
+    });
+}
+
+/**
+ * #################
  * ## verifyEmail ##
  * #################
  */
@@ -265,6 +284,7 @@ module.exports = {
     generateRandomString,
     sendMail,
     verifyEmail,
+    changeEmail,
     newOfferMail,
     offerAccepted,
     offerDeniedMail,
