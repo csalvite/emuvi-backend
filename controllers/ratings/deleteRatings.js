@@ -6,6 +6,7 @@ const deleteRatings = async (req, res, next) => {
 
     try {
         connection = await getDB();
+
         const { idVote } = req.params;
 
         //Eliminamos el voto

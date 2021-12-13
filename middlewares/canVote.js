@@ -5,11 +5,13 @@ const canVote = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { idVote } = req.params;
+        const { idUser } = req.params;
+
+        const idReqUser = req.userAuth.id;
 
         const [voteUser] = await connection.query(
             `SELECT * FROM user_vote WHERE idUser = ? AND idUserVoted = ?`,
-            [req.auth.id, idVote]
+            [idReqUser, idUser]
         );
         if (voteUser.length > 0) {
             const error = new Error('Ya has votado al usuario');
@@ -17,7 +19,7 @@ const canVote = async (req, res, next) => {
             throw error;
         }
 
-        if (Number(idVote) === idReqUser) {
+        if (Number(idUser) === idReqUser) {
             const error = new Error('No te puedes votar a ti mismo');
             error.httpStatus = 403;
             throw error;
@@ -30,4 +32,4 @@ const canVote = async (req, res, next) => {
         if (connection) connection.release();
     }
 };
-module.exports = canEditVote;
+module.exports = canVote;

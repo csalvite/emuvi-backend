@@ -17,6 +17,9 @@ app.use(morgan('dev'));
 // Middleware para leer body en formato form-data
 app.use(fileUpload());
 
+// Cargamos las fotos para mails
+app.use(express.static('emailPhotos'));
+
 /*
  * #################
  * ## Middlewares ##
@@ -28,6 +31,8 @@ const productExists = require('./middlewares/productExists');
 const isAuth = require('./middlewares/isAuth');
 const userExists = require('./middlewares/userExists');
 const canEditUser = require('./middlewares/canEditUser');
+const canVote = require('./middlewares/canVote');
+const canEditVote = require('./middlewares/canEditVote');
 
 /*
  * ###############################
@@ -94,6 +99,19 @@ const {
     deleteFavProducts,
     listUserFavProducts,
 } = require('./controllers/favorite');
+
+/*
+ * ###########################
+ * ## Controladores ratings ##
+ * ###########################
+ * */
+
+const {
+    newRatings,
+    deleteRatings,
+    editRatings,
+    userListRatings,
+} = require('./controllers/ratings');
 
 /* 
 #####################################
@@ -313,6 +331,24 @@ app.delete(
     canEditUser,
     deleteUserSales
 );
+
+/* 
+#########################
+### Endpoints Ratings ###
+#########################
+*/
+
+// New Rating
+app.post('/users/:idUser/votes', isAuth, canVote, newRatings);
+
+// Edit Rating
+app.put('/users/vote/:idVote', isAuth, canEditVote, editRatings);
+
+// Delete Votes
+app.delete('/users/vote/:idVote', isAuth, canEditVote, deleteRatings);
+
+// User Ratings List
+app.get('/users/:idUser/vote', userListRatings);
 
 /*
   #####################################

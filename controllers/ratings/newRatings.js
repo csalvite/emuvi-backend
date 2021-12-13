@@ -3,11 +3,14 @@ const getDB = require('../../database/getDB');
 
 const newRatings = async (req, res, next) => {
     let connection;
+
     try {
         connection = await getDB();
 
         const { vote, comment } = req.body;
+
         const { idUser } = req.params;
+
         const options = [0, 1, 2, 3, 4, 5];
 
         if (!vote) {
@@ -24,10 +27,11 @@ const newRatings = async (req, res, next) => {
 
         await connection.query(
             `
-    INSERT INTO user_vote (vote, comment, idUser, idUserVoted, date)
-    VALUES (?, ?, ?, ?)`,
-            [vote, comment, req.auth.id, idUser, new Date()]
+            INSERT INTO user_vote (vote, comment, idUser, idUserVoted, date)
+            VALUES (?, ?, ?, ?, ?)`,
+            [vote, comment, req.userAuth.id, idUser, new Date()]
         );
+
         res.send({
             status: 'OK',
             message: 'Has añadido un nuevo voto con éxito',

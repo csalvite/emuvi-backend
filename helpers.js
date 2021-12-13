@@ -24,7 +24,7 @@ const uploadsDir = path.join(__dirname, UPLOADS_DIRECTORY);
 // Para añadir la imagen al correo necesitamos tenerla en base64 - Funcion que devuelve el base64:
 const emailPathImage = path.join(
     __dirname,
-    EMAIL_PHOTOS_DIRECTORY + '/OfertaDeCompra.jpg'
+    EMAIL_PHOTOS_DIRECTORY + '/BienvenidoEMUVI.png'
 );
 
 //Asignamos el API Key a Sendgrind.
@@ -100,9 +100,7 @@ async function verifyEmail(email, registrationCode) {
     const emailBody = `
   <h2> Te acabas de registrar en EMUVI </h2>
   <p> Pulsa el siguiente enlace para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
-  <img src="data:image/jpeg;base64,${base64_encode(
-      emailPathImage
-  ).toString()}" alt="newOffer" />
+  <img src="" alt="newOffer" />
   `;
 
     //Enviamos el mensaje al correo del usuario.
@@ -110,15 +108,6 @@ async function verifyEmail(email, registrationCode) {
         to: email,
         subject: 'Activa tu cuenta',
         body: emailBody,
-        files: [
-            {
-                filename: 'OfertaDeCompra.jpg',
-                contentType: 'image/jpeg',
-                cid: '12345',
-                content: base64_encode(emailPathImage).toString(),
-                disposition: 'inline',
-            },
-        ],
     });
 }
 
@@ -128,35 +117,18 @@ async function verifyEmail(email, registrationCode) {
  * #################
  */
 
-// Funcion para SUPUESTAMENTE sacar el base64 de la imagen
-function base64_encode(file) {
-    const base64 = fs.readFileSync(file, 'base64');
-    return base64;
-}
-
 async function newOfferMail(email, userBuyer, productName, idUser) {
     const emailBody = `
-    <p> El usuario ${userBuyer} quiere comprar tu producto ${productName}!<p>
-    <p> Puedes gestionar tus ofertas a través del siguiente enlace: </p>
-    <p> ${PUBLIC_HOST}/users/${idUser}/offers </p>
-    <img src="data:image/jpeg;base64,${base64_encode(
-        emailPathImage
-    ).toString()}" alt="newOffer" />
-  `;
+        <p> El usuario ${userBuyer} quiere comprar tu producto ${productName}!<p>
+        <p> Puedes gestionar tus ofertas a través del siguiente enlace: </p>
+        <p> ${PUBLIC_HOST}/users/${idUser}/offers </p>
+        <img src=${emailPathImage} />
+    `;
 
     await sendMail({
         to: email,
         subject: 'Tienes una nueva oferta!',
         body: emailBody,
-        files: [
-            {
-                filename: 'OfertaDeCompra.jpg',
-                contentType: 'image/jpeg',
-                cid: '12345',
-                content: base64_encode(emailPathImage).toString(),
-                disposition: 'inline',
-            },
-        ],
     });
 }
 

@@ -2,6 +2,7 @@ const getDB = require('../database/getDB');
 
 const canEditVote = async (req, res, next) => {
     let connection;
+
     try {
         connection = await getDB();
 
@@ -14,11 +15,12 @@ const canEditVote = async (req, res, next) => {
             `SELECT idUser FROM user_vote WHERE id = ?`,
             [idVote]
         );
+
         if (idUserowner.length < 1) {
             const error = new Error(
                 'No hay un usuario propietario para el voto'
             );
-            error.httpStatus = 400;
+            error.httpStatus = 404;
             throw error;
         }
 

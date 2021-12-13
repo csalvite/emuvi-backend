@@ -1,4 +1,3 @@
-//app.post('/vote/:id', validAuth, canEditVote, editVote');
 const getDB = require('../../database/getDB');
 
 const editRatings = async (req, res, next) => {
@@ -6,8 +5,11 @@ const editRatings = async (req, res, next) => {
 
     try {
         connection = await getDB();
+
         const { idVote } = req.params;
+
         const { vote, comment } = req.body;
+
         const options = [0, 1, 2, 3, 4, 5];
 
         if (!vote) {
@@ -15,12 +17,14 @@ const editRatings = async (req, res, next) => {
             error.httpStatus = 400;
             throw error;
         }
+
         if (!options.includes(Number(vote))) {
             const error = new Error(
                 'Tiene que emitir tu voto entre un numero entero del 0 al 5'
             );
             throw error;
         }
+
         //Actualizamos el voto
         await connection.query(
             `UPDATE user_vote SET vote= ?, comment = ? WHERE id = ?`,
