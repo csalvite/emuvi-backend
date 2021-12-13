@@ -83,6 +83,18 @@ const {
     newProduct,
 } = require('./controllers/product');
 
+/*
+ * ################################
+ * ## Controladores de favoritos ##
+ * ################################
+ * */
+
+const {
+    addFavProduct,
+    deleteFavProducts,
+    listUserFavProducts,
+} = require('./controllers/favorite');
+
 /* 
 #####################################
 ### Endpoints Inicio de la página ###
@@ -210,6 +222,33 @@ app.delete(
     productExists,
     canEditProduct,
     deleteProductPhoto
+);
+
+/* 
+###########################
+### Endpoints favoritos ###
+###########################
+*/
+
+// Lista y filtra los productos marcados como favoritos por el usuario
+app.get(
+    '/users/:idUser/favorites',
+    isAuth,
+    userExists,
+    canEditUser,
+    listUserFavProducts
+);
+
+// Añade un producto a favoritos
+app.post('/products/:idProduct/favorite', isAuth, productExists, addFavProduct);
+
+// Borra un producto de los favoritos del usuario
+app.delete(
+    '/user/:idUser/favorites/:idProduct',
+    isAuth,
+    userExists,
+    canEditUser,
+    deleteFavProducts
 );
 
 /* 

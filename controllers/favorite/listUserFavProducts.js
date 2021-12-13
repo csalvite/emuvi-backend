@@ -1,57 +1,99 @@
 const getDB = require('../../database/getDB');
 
 const favProducts = async (req, res, next) => {
-  let connection;
+    let connection;
 
-  try {
-    connection = await getDB();
+    try {
+        connection = await getDB();
 
-    const { idUser } = req.params;
+        const { idUser } = req.params;
 
-    const { search, order, direction } = req.query;
+        const { search, order, direction } = req.query;
 
-    const validOrderOptions = ['createdAt', 'product.name', 'product.price'];
+        const validOrderOptions = ['createdAt', 'name', 'price'];
 
-    const validDirectionOptions = ['DESC', 'ASC'];
+        const validDirectionOptions = ['DESC', 'ASC'];
 
-    const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
+        const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
 
-    const orderDirection = validDirectionOptions.includes(direction)
-      ? direction
-      : 'DESC';
+        const orderDirection = validDirectionOptions.includes(direction)
+            ? direction
+            : 'DESC';
 
-    let products;
+        let data = [];
+        if (search) {
+            const [products] = await connection.query(
+                `
+                    SELECT product.id, product.name, product.price, product.description, product.category, product.createdAt, product.sold
+                    FROM product inner join user_favorite_product
+                      on (product.id = user_favorite_product.idProduct)
+                    WHERE user_favorite_product.idUser = ? and product.name like ? or product.category like ?
+                    ORDER BY product.${orderBy} ${orderDirection}
+                    `,
+                [idUser, `%${search}%`, `%${search}%`]
+            );
 
-    if (search) {
-      [products] = await connection.query(
-        `SELECT user_favorite_product.id, user_favorite_product.idUser, user_favorite_product.idProduct, 
-                  user_favorite_product.user.name, user_favorite_product.user.id
-                  FROM user LEFT JOIN user_favorite_product on (user.id = user_favorite_product.idUser)
-                  WHERE user.id = ? and product.sold is false
-                  ORDER BY ${orderBy} ${orderDirection}`,
-        [idUser, `%${search}%`, `%${search}%`]
-      );
-    } else {
-      [products] = await connection.query(
-        `SELECT user_favorite_product.idProduct, user_favorite_product.price, user.name, user.id
-                  FROM user LEFT JOIN product on (user.id = product.idUser)
-                  WHERE user.id = ? and product.sold is false
-                  ORDER BY ${orderBy} ${orderDirection}`,
-        [idUser]
-      );
+            if (products.length < 1) {
+                data.push('No existen productos para este usuario');
+            } else {
+                for (let i = 0; i < products.length; i++) {
+                    if (!products[i].sold) {
+                        // Obtenemos las fotos de la entrada seleccionada.
+                        const [photos] = await connection.query(
+                            `SELECT name FROM product_photo WHERE idProduct = ?`,
+                            [products[i].id]
+                        );
+
+                        data.push({
+                            ...products[i],
+                            photos,
+                        });
+                    }
+                }
+            }
+        } else {
+            const [products] = await connection.query(
+                `
+                    SELECT product.id, product.name, product.price, product.description, product.category, product.createdAt, product.sold
+                    FROM product inner join user_favorite_product
+                      on (product.id = user_favorite_product.idProduct)
+                    WHERE user_favorite_product.idUser = ? 
+                    ORDER BY product.${orderBy} ${orderDirection}
+                    `,
+                [idUser]
+            );
+
+            if (products.length < 1) {
+                data.push('No existen productos para este usuario');
+            } else {
+                for (let i = 0; i < products.length; i++) {
+                    if (!products[i].sold) {
+                        // Obtenemos las fotos de la entrada seleccionada.
+                        const [photos] = await connection.query(
+                            `SELECT name FROM product_photo WHERE idProduct = ?`,
+                            [products[i].id]
+                        );
+
+                        data.push({
+                            ...products[i],
+                            photos,
+                        });
+                    }
+                }
+            }
+        }
+
+        res.send({
+            status: 'ok',
+            data: {
+                data,
+            },
+        });
+    } catch (error) {
+        next(error);
+    } finally {
+        if (connection) connection.release();
     }
-
-    res.send({
-      status: 'ok',
-      data: {
-        products,
-      },
-    });
-  } catch (error) {
-    next(error);
-  } finally {
-    if (connection) connection.release();
-  }
 };
 
 module.exports = favProducts;

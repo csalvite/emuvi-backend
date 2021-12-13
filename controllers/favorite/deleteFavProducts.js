@@ -2,17 +2,16 @@ const getDB = require('../../database/getDB');
 
 const deleteFavProduct = async (req, res, next) => {
     try {
-        Connection = await getDB();
+        connection = await getDB();
 
-        const { idProduct } = req.params;
-
-        const idReqUser = req.userAuth.id;
+        const { idUser, idProduct } = req.params;
 
         const [favProduct] = await connection.query(
-            `SELECT * FROM user_favorite_product WHERE idUser = ?
-     AND id_product = ?`,
-            [req.auth.id, idProduct]
+            `SELECT id FROM user_favorite_product WHERE idUser = ?
+                AND idProduct = ?`,
+            [idUser, idProduct]
         );
+
         if (favProduct.length < 1) {
             const error = new Error('No tienes el producto en tus favoritos');
             error.httpStatus = 404;
@@ -20,8 +19,8 @@ const deleteFavProduct = async (req, res, next) => {
         }
 
         await connection.query(
-            `DELETE FROM user_favorite_product WHERE idUser = ? AND idProduct = ?`,
-            [idProduct, idReqUser]
+            `DELETE FROM user_favorite_product WHERE id = ?`,
+            [favProduct[0].id]
         );
 
         res.send({

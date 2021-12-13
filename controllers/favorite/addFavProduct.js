@@ -1,24 +1,41 @@
 const getDB = require('../../database/getDB');
-async function addFavProduct(req, res, next) {
+
+const addFavProduct = async (req, res, next) => {
     let connection;
+
     try {
         connection = await getDB();
+
         const { idProduct } = req.params;
-        const idReqUser = req.userAuth.id;
-        const [favexits] = await connection.query(
+
+        const [favExits] = await connection.query(
             `
             SELECT * FROM user_favorite_product WHERE idUser = ? AND idProduct = ?`,
-            [req.auth.id, idProduct]
+            [req.userAuth.id, idProduct]
         );
-        if (favexits.length > 0) {
+
+        if (favExits.length > 0) {
             const error = new Error('Ya tienes ese producto en tus favoritos');
             error.httpStatus = 404;
             throw error;
         }
+
+        const [isSold] = await connection.query(
+            `select sold from product where id = ?`,
+            [idProduct]
+        );
+
+        if (isSold[0].sold) {
+            const error = new Error('El producto ya ha sido vendido');
+            error.httpStatus = 400;
+            throw error;
+        }
+
         const [result] = await connection.query(
             `INSERT INTO user_favorite_product(idUser, idProduct) VALUES(?, ?)`,
-            [req.auth.id, , idProduct]
+            [req.userAuth.id, idProduct]
         );
+
         res.send({
             status: 'ok',
             message: 'Producto añadido como favorito correctamente',
@@ -28,5 +45,5 @@ async function addFavProduct(req, res, next) {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 module.exports = addFavProduct;
