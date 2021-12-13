@@ -62,6 +62,7 @@ const {
     deleteUserSales,
     newOffer,
     deniedOffer,
+    acceptOffer,
 } = require('./controllers/offers/');
 
 /*
@@ -188,7 +189,13 @@ app.post(
 );
 
 // Acepta la reserva
-app.post('/users/:idUser/offers/:idOffer/accept');
+app.post(
+    '/users/:idUser/offers/:idOffer/accept',
+    isAuth,
+    userExists,
+    canEditUser,
+    acceptOffer
+);
 
 // Deniega la reserva
 app.post(

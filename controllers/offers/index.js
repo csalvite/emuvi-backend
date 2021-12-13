@@ -1,3 +1,4 @@
+const acceptOffer = require('./acceptOffer');
 const deleteUserBookings = require('./deleteUserBookings');
 const deleteUserSales = require('./deleteUserSales');
 const deniedOffer = require('./deniedOffer');
@@ -14,4 +15,5 @@ module.exports = {
     deleteUserSales,
     newOffer,
     deniedOffer,
+    acceptOffer,
 };

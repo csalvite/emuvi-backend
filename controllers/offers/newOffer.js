@@ -34,8 +34,8 @@ const newOffer = async (req, res, next) => {
 
         // Insertamos una nueva reserva
         await connection.query(
-            `insert into user_reserve_product (idUserOwner, idProduct, idUserBuyer) values (?, ?, ?)`,
-            [userOwner[0].id, idProduct, idUser]
+            `insert into user_reserve_product (idUserOwner, idProduct, idUserBuyer, createdAt) values (?, ?, ?, ?)`,
+            [userOwner[0].id, idProduct, idUser, new Date()]
         );
 
         // Necesitamos el nombre del usuario comprador y del producto para el correo

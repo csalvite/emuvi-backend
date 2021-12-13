@@ -20,7 +20,7 @@ const addProductPhoto = async (req, res, next) => {
         // Si hay mas de 5 lanzamos
         if (photos.length >= 5) {
             const error = new Error(
-                'Esta entrada ya tiene las 5 fotos permitidas'
+                'Este producto ya tiene las 5 fotos permitidas'
             );
             error.httpStatus = 403;
             throw error;

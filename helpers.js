@@ -124,7 +124,6 @@ async function newOfferMail(email, userBuyer, productName, idUser) {
     <img src="data:image/jpeg;base64,${base64_encode(
         emailPathImage
     ).toString()}" alt="newOffer" />
-    <img src="cid:${files[0].cid}" alt="otro intento" width="227" height="86" />
   `;
 
     await sendMail({
@@ -154,13 +153,14 @@ async function offerAccepted(
     sellerUser,
     productName,
     street,
+    city,
     time,
     date,
     idUser
 ) {
     const emailBody = `
     <p> El usuario ${sellerUser}, propietario del producto ${productName}, ha aceptado tu propuesta de compra </p>
-    <p> La compra se realizará en: <strong>${street}</strong> a las <strong>${time}</strong> el día ${date} </p>
+    <p> La compra se realizará en: <strong>${street}, ${city}</strong> a las <strong>${time}</strong> el día <strong>${date}</strong> </p>
     <p> No llegues tarde! </p>
     <p> Tienes más información en tu perfil, apartado "Ofertas Enviadas": ${PUBLIC_HOST}/users/${idUser}/ </p>
   `;
