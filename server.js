@@ -106,7 +106,7 @@ app.post('/users', newUser);
 app.post('/users/register/:registrationCode', validateUser);
 
 // Logeamos a un usuario y retornamos un token.
-app.post('/user/login', loginUser);
+app.post('/users/login', loginUser);
 
 // Retornamos info de un usuario público
 app.get('/users/:idUser', userExists, getPublicUser); // Si el usuario es anónimo no tiene una Authorization, podrá ver igual los datos?
@@ -167,7 +167,7 @@ app.post('/products/new', isAuth, newProduct);
 
 // Edita un producto
 app.put(
-    '/product/:idProduct',
+    '/products/:idProduct',
     isAuth,
     productExists,
     canEditProduct,

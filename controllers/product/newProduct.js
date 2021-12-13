@@ -5,30 +5,34 @@ const newProductSchema = require('../../schemas/newProductSchema');
 
 const newProduct = async (req, res, next) => {
     let connection;
+
     try {
         connection = await getDB();
+
         await validate(newProductSchema, req.body);
+
         const idReqUser = req.userAuth.id;
 
         //Vamos requerir nombre, precio y descripcion para un nuevo producto
-        const { name, price, description } = req.body;
+        const { name, price, description, category } = req.body;
 
         const [user] = await connection.query(
             `SELECT id FROM user WHERE id = ?`,
             [idReqUser]
         );
+
         //Si no hay usuario lanzamos un error
         if (user.length < 1) {
             const error = new Error('El usuario no existe');
             error.httpStatus = 404;
             throw error;
         }
-        //Añadimos producto con sus respectivos atributos.
 
+        //Añadimos producto con sus respectivos atributos.
         const [newProduct] = await connection.query(
             `INSERT INTO product (idUser, name, price, category, description, sold, createdAt)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [idReqUser, name, price, category, description, sold, new Date()]
+                VALUES (?, ?, ?, ?, ?, 0, ?)`,
+            [idReqUser, name, price, category, description, new Date()]
         );
 
         //Recuperamos el id del producto que creamos
