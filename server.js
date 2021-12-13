@@ -77,6 +77,11 @@ const {
     deleteProduct,
     detailedProduct,
     editProduct,
+    addProductPhoto,
+    deleteProductPhoto,
+    listProducts,
+    newProduct,
+    onSaleProducts,
 } = require('./controllers/product');
 
 /* 
@@ -154,6 +159,12 @@ app.get('/users/:idUser/products', isAuth, userExists, userProducts);
   ##########################
 */
 
+// Lista de productos
+app.get('/products', listProducts);
+
+// Nuevo producto
+app.post('/products/new', isAuth, newProduct);
+
 // Edita un producto
 app.put(
     '/product/:idProduct',
@@ -161,6 +172,15 @@ app.put(
     productExists,
     canEditProduct,
     editProduct
+);
+
+// Añade fotos de producto
+app.post(
+    '/products/:idProduct/photos',
+    isAuth,
+    productExists,
+    canEditProduct,
+    addProductPhoto
 );
 
 // Devuelve datos de un producto en concreto

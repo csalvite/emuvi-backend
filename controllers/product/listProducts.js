@@ -1,63 +1,84 @@
 const getDB = require('../../database/getDB');
 
-const products = async (req, res, next) => {
-  let connection;
+const listProducts = async (req, res, next) => {
+    let connection;
 
-  try {
-    connection = await getDB();
+    try {
+        connection = await getDB();
 
-    const { search, order, postalCode } = req.query;
+        const { search, order, direction } = req.query;
 
-    const validOrderOptions = [
-      'product.createdAt',
-      'product.name',
-      'product.price',
-      'product.modifiedAt',
-    ];
+        const validOrderOptions = ['createdAt', 'name', 'price', 'modifiedAt'];
 
-    const validDirectionOptions = ['DESC', 'ASC'];
+        const validDirectionOptions = ['DESC', 'ASC'];
 
-    const orderBy = validOrderOptions.includes(name) ? order : 'name';
+        const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
 
-    const orderDirection = validDirectionOptions.includes(createdAd)
-      ? createdAd
-      : 'DESC';
+        const orderDirection = validDirectionOptions.includes(direction)
+            ? direction
+            : 'DESC';
 
-    let products;
+        // Obtenemos la información de la entrada de la base de datos
+        let data = [];
+        if (search) {
+            const [products] = await connection.query(
+                `
+                    SELECT id, name, price, description, category, createdAt, sold
+                    FROM product
+                    WHERE name like ? or category like ?
+                    ORDER BY ${orderBy} ${orderDirection}
+                    `,
+                [`%${search}%`, `%${search}%`]
+            );
 
-    // Obtenemos la información de la entrada de la base de datos
-    const [products] = await connection.query(
-      `
-                SELECT product.id, product.name, product.price, product.createdAt, product.sold,
-                FROM product
-                WHERE product.name = ?
-                GROUP BY product.createdAt
-                ORDER BY ${orderBy} ${orderDirection}
-                `,
-      [`%${name}%``%${search}%`, `%${search}%`]
-    );
+            for (let i = 0; i < products.length; i++) {
+                if (!products[i].sold) {
+                    // Obtenemos las fotos de la entrada seleccionada.
+                    const [photos] = await connection.query(
+                        `SELECT name FROM product_photo WHERE idProduct = ?`,
+                        [products[i].id]
+                    );
 
-    // Obtenemos las fotos de la entrada seleccionada.
+                    data.push({
+                        ...products[i],
+                        photos,
+                    });
+                }
+            }
+        } else {
+            const [products] = await connection.query(
+                `SELECT id, name, price, description, category, createdAt, sold
+                    FROM product
+                    ORDER BY ${orderBy} ${orderDirection}`
+            );
 
-    const [photos] = await connection.query(
-      `SELECT idProduct FROM product_photo WHERE id = ?`,
-      []
-    );
+            for (let i = 0; i < products.length; i++) {
+                if (!products[i].sold) {
+                    // Obtenemos las fotos de la entrada seleccionada.
+                    const [photos] = await connection.query(
+                        `SELECT name FROM product_photo WHERE idProduct = ?`,
+                        [products[i].id]
+                    );
 
-    res.send({
-      status: 'ok',
-      data: {
-        entry: {
-          ...entry[0],
-          photos,
-        },
-      },
-    });
-  } catch (error) {
-    next(error);
-  } finally {
-    if (connection) connection.release();
-  }
+                    data.push({
+                        ...products[i],
+                        photos,
+                    });
+                }
+            }
+        }
+
+        res.send({
+            status: 'ok',
+            data: {
+                data,
+            },
+        });
+    } catch (error) {
+        next(error);
+    } finally {
+        if (connection) connection.release();
+    }
 };
 
-module.exports = products;
+module.exports = listProducts;

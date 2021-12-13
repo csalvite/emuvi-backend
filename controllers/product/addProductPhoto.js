@@ -1,6 +1,7 @@
 const { concurrency } = require('sharp');
 const getDB = require('../../database/getDB');
 const { savePhoto } = require('../../helpers');
+
 const addProductPhoto = async (req, res, next) => {
     let connection;
     try {
@@ -41,4 +42,5 @@ const addProductPhoto = async (req, res, next) => {
         if (connection) connection.release();
     }
 };
+
 module.exports = addProductPhoto;

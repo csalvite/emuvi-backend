@@ -1,8 +1,5 @@
-//const mysql = require('mysql2');
 const getDB = require('./getDB');
 
-//const faker = require('faker');
-//const bcrypt = require('bcrypt');
 async function main() {
     let connection;
     try {
@@ -234,4 +231,4 @@ async function main() {
     }
 }
 
-main();
+//main();
