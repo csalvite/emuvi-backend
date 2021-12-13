@@ -1,7 +1,7 @@
 //app.post('/vote/:id', validAuth, canEditVote, editVote');
 const getDB = require('../../database/getDB');
 
-const editVote = async (req, res, next) => {
+const editRatings = async (req, res, next) => {
     let connection;
 
     try {
@@ -38,4 +38,4 @@ const editVote = async (req, res, next) => {
     }
 };
 
-module.exports = editVote;
+module.exports = editRatings;
