@@ -135,7 +135,7 @@ async function main() {
                 ('camara de video', 10.50, 'video', 'esto es una falda', '2021-10-06', 6),
                 ('zelda', 1.50, 'videojuegos', 'esto es una falda', '2021-11-15', 5),
                 ('martillo neumatico', 1.20, 'otros', 'esto es una falda', '2021-07-11', 4),
-                ('jajaja', 20.50, 'otros', 'esto es una falda', '2021-11-11', 4),
+                ('ordenador antiguo', 20.50, 'informatica', 'esto es una falda', '2021-11-11', 4),
                 ('disco extremoduro', 10200.50, 'musica', 'esto es una falda', '2021-06-02', 2),
                 ('album extremoduro', 17000.50, 'musica', 'esto es una falda', '2021-10-23', 2),
                 ('the legend of zelda', 10300.50, 'videojuegos', 'esto es una falda', '2021-08-14', 2);`
