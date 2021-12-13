@@ -41,11 +41,12 @@ const {
     newUser,
     validateUser,
     deleteUser,
-    getUser,
+    getPublicUser,
     editUserAvatar,
     editUserData,
     editUserPassword,
     userProducts,
+    getPrivateUser,
 } = require('./controllers/user');
 
 /*
@@ -101,8 +102,17 @@ app.post('/users/register/:registrationCode', validateUser);
 // Logeamos a un usuario y retornamos un token.
 app.post('/user/login', loginUser);
 
-// Retornamos info de un usuario
-app.get('/users/:idUser', isAuth, userExists, getUser); // Si el usuario es anónimo no tiene una Authorization, podrá ver igual los datos?
+// Retornamos info de un usuario público
+app.get('/users/:idUser', userExists, getPublicUser); // Si el usuario es anónimo no tiene una Authorization, podrá ver igual los datos?
+
+// Info para el usuario perfil privado
+app.get(
+    '/users/profile/:idUser',
+    isAuth,
+    userExists,
+    canEditUser,
+    getPrivateUser
+);
 
 // Actualizamos el avatar de un usuario
 app.put(

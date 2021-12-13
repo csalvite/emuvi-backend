@@ -2,7 +2,7 @@
 
 const getDB = require('../../database/getDB');
 
-const getUser = async (req, res, next) => {
+const getPublicUser = async (req, res, next) => {
     let connection;
 
     try {
@@ -10,13 +10,6 @@ const getUser = async (req, res, next) => {
 
         // Obtenemos el id del usuario del que queremos obtener la información
         const { idUser } = req.params;
-
-        // Obtener el id del usuario que hace la request, como el perfil del usuario lo podrán ver anónimos,
-        // Solo recogemos la idReqUser en caso de que exista un login
-        let idReqUser;
-        if (req.userAuth) {
-            idReqUser = req.userAuth.id;
-        }
 
         //Obtener los datos del usuario de los cuales queremos la información
         const [user] = await connection.query(
@@ -101,18 +94,6 @@ const getUser = async (req, res, next) => {
             postalCode: user[0].postalCode,
         };
 
-        // Si el usuario quiere ver su perfil, añadimos info
-        if (user[0].id === idReqUser) {
-            userInfo.username = user[0].username;
-            userInfo.email = user[0].email;
-            userInfo.birthday = user[0].birthday;
-            userInfo.biography = user[0].biography;
-            userInfo.phone = user[0].phone;
-            userInfo.street = user[0].street;
-            userInfo.latitude = user[0].latitude;
-            userInfo.longitude = user[0].longitude;
-        }
-
         res.send({
             status: 'ok',
             data: {
@@ -129,4 +110,4 @@ const getUser = async (req, res, next) => {
     }
 };
 
-module.exports = getUser;
+module.exports = getPublicUser;
