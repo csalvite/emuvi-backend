@@ -84,7 +84,6 @@ async function verifyEmail(email, registrationCode) {
   <img src="data:image/jpeg;base64,${base64_encode(
       emailPathImage
   ).toString()}" alt="newOffer" />
-    <img src="${files[0].cid}" alt="otro intento" />
   `;
 
     //Enviamos el mensaje al correo del usuario.

@@ -25,10 +25,10 @@ async function main() {
             id INT PRIMARY KEY AUTO_INCREMENT,
             username VARCHAR(30) UNIQUE NOT NULL,
             name VARCHAR(30) NOT NULL,
-            lastname VARCHAR(60) NOT NULL,
+            lastname VARCHAR(60) NULL,
             email VARCHAR(50) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
-            birthday DATETIME NOT NULL,
+            birthday DATETIME NULL,
             avatar VARCHAR(255),
             biography TEXT,
             active BOOLEAN DEFAULT false,
@@ -111,15 +111,15 @@ async function main() {
 
         /* Creo tabla usuarios */
         await connection.query(`
-            INSERT INTO user(username, name, lastname, email, password, birthday, createdAt)
-            values ('user1', 'Manolito', 'Masdf', 'emailuser1@gmail.com', '123456', '1995-02-18', '2021-12-03 17:00:00'),
-            ('user2', 'Aitor', 'Menta', 'emailuser2@gmail.com', '123456', '1995-02-18', '2021-12-01 17:00:00'),
-            ('user3', 'Rosa', 'Melano', 'emailuser3@gmail.com', '123456', '1995-02-18', '2021-11-13 17:00:00'),
-            ('user4', 'Antoñito', 'Masdf', 'emailuser4@gmail.com', '123456', '1995-02-18', '2021-10-25 17:00:00'),
-            ('user5', 'Maria', 'Masdf', 'emailuser5@gmail.com', '123456', '1995-02-18', '2021-08-03 17:00:00'),
-            ('user6', 'Raquel', 'Masdf', 'emailuser6@gmail.com', '123456', '1995-02-18', '2021-09-03 17:00:00'),
-            ('user7', 'Chus', 'Masdf', 'emailuser7@gmail.com', '123456', '1995-02-18', '2021-10-14 17:00:00'),
-            ('user8', 'Manolo', 'Masdf', 'emailuser8@gmail.com', '123456', '1995-02-18', '2021-11-11 17:00:00');`);
+            INSERT INTO user(username, name, lastname, email, active, password, birthday, createdAt)
+            values ('user1', 'Manolito', 'Masdf', 'emailuser1@gmail.com', 1, '123456', '1995-02-18', '2021-12-03 17:00:00'),
+            ('user2', 'Aitor', 'Menta', 'emailuser2@gmail.com', 1, '123456', '1995-02-18', '2021-12-01 17:00:00'),
+            ('user3', 'Rosa', 'Melano', 'emailuser3@gmail.com', 1, '123456', '1995-02-18', '2021-11-13 17:00:00'),
+            ('user4', 'Antoñito', 'Masdf', 'emailuser4@gmail.com', 1, '123456', '1995-02-18', '2021-10-25 17:00:00'),
+            ('user5', 'Maria', 'Masdf', 'emailuser5@gmail.com', 1, '123456', '1995-02-18', '2021-08-03 17:00:00'),
+            ('user6', 'Raquel', 'Masdf', 'emailuser6@gmail.com', 1, '123456', '1995-02-18', '2021-09-03 17:00:00'),
+            ('user7', 'Chus', 'Masdf', 'emailuser7@gmail.com', 1, '123456', '1995-02-18', '2021-10-14 17:00:00'),
+            ('user8', 'Manolo', 'Masdf', 'emailuser8@gmail.com', 1, '123456', '1995-02-18', '2021-11-11 17:00:00');`);
 
         console.log('Usuarios insertados');
 
