@@ -1,7 +1,7 @@
-//app.delete('/vote/:id', validAuth, canEditVote, deleteVote);
+//app.delete('/vote/:id', validAuth, canEditVote, deleteRatings);
 const getDB = require('../../database/getDB');
 
-const deleteVote = async (req, res, next) => {
+const deleteRatings = async (req, res, next) => {
     let connection;
 
     try {
@@ -24,4 +24,4 @@ const deleteVote = async (req, res, next) => {
     }
 };
 
-module.exports = deleteVote;
+module.exports = deleteRatings;
