@@ -3,46 +3,29 @@
 
 const getDB = require('../../database/getDB');
 
-const deleteProduct = async (rec, res, next) => {
-  let connection;
+const deleteProduct = async (req, res, next) => {
+    let connection;
 
-  try {
-    connection = await getDB();
+    try {
+        connection = await getDB();
 
-    const { search } = req.query;
+        //Obtenemos el id del producto que queremos borrar.
+        const { idProduct } = req.params;
 
-    //Obtenemos los datos del usuario que quiere borrar el producto.
-    const [user] = await connection.query(
-      `SELECT id, username, email, createdAt FROM user WHERE id = ?`,
-      [idUser]
-    );
+        //Si el producto que queremos borrar pertenece al usuario que quiere borrarlo,
+        //lo borramos.
 
-    //Obtenemos el id del producto que queremos borrar.
-    const { idProduct } = req.params;
+        await connection.query(`DELETE FROM product WHERE id = ?`, [idProduct]);
 
-    //Si el producto que queremos borrar pertenece al usuario que quiere borrarlo,
-    //lo borramos.
-
-    const [user] = await connection.query(
-      `SELECT idUser FROM product WHERE idUser = ?`,
-      [idUser]
-    );
-
-    if ((idUser = idReqUser)) {
-      await connection.query(`DELETE FROM user WHERE id = ?`, [idUser]);
-    } else {
-      throw new Error('No');
+        res.send({
+            status: 'ok',
+            message: 'Producto eliminado',
+        });
+    } catch (error) {
+        next(error);
+    } finally {
+        if (connection) connection.release();
     }
-
-    res.send({
-      status: 'ok',
-      message: 'Producto eliminado',
-    });
-  } catch (error) {
-    next(error);
-  } finally {
-    if (connection) connection.release();
-  }
 };
 
 module.exports = deleteProduct;

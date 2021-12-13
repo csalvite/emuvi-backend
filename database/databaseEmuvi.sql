@@ -1,15 +1,26 @@
-CREATE DATABASE emuvi;
+/*
+	#############################
+    ### SCRIPT CREACION EMUVI ###
+    #############################
+*/
 
-USE emuvi;
+create database emuvi;
+
+use emuvi;
+
+/* borramos las tablas */
+drop table if exists notification, user_reserve_product, user_vote, user_favorite_product, product_photo, product, user;
+
+/* Creamos las tablas */ 
 
 CREATE TABLE user(
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(30) UNIQUE NOT NULL,
-    name VARCHAR(30) NOT NULL,
-    lastname VARCHAR(60) NOT NULL,
+    name VARCHAR(30) NULL,
+    lastname VARCHAR(60) NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    birthday DATETIME NOT NULL,
+    password VARCHAR(255) NULL,
+    birthday DATETIME NULL,
     avatar VARCHAR(255),
     biography TEXT,
     active BOOLEAN DEFAULT false,
@@ -70,6 +81,7 @@ CREATE TABLE user_reserve_product(
     idProduct INT NOT NULL,
     idUserBuyer INT NOT NULL,
     reserveStatus ENUM('pendiente', 'aceptada', 'denegada') DEFAULT 'pendiente',
+    createdAt DATETIME NOT NULL,
     FOREIGN KEY (idUserOwner) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (idProduct) REFERENCES product(id) ON DELETE CASCADE,
     FOREIGN KEY (idUserBuyer) REFERENCES user(id) ON DELETE CASCADE
@@ -82,3 +94,6 @@ CREATE TABLE notification(
     idReserve INT,
     FOREIGN KEY (idReserve) REFERENCES user_reserve_product(id)
 );
+
+/* Mustro las tablas */
+show tables;

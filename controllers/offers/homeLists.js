@@ -15,23 +15,16 @@ const homeLists = async (req, res, next) => {
 
     const validDirectionOptions = ['DESC', 'ASC'];
 
-    // Esto está guay, pero lo que hace es que si no indican un orden (que solo tiene como opciones válidas "createdAt")
-    // por defecto usará createAt, en este caso no nos haría falta, podríamos usar directamente validOrderOptions en el lugar de orderBy :D
     const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
 
-    // Aqui por ejemplo se puede indicar que la dirección sea DESC o ASC, en este indicas que por defecto sea ASC, aqui está guay
     const orderDirection = validDirectionOptions.includes(direction)
       ? direction
       : 'ASC';
 
     // Lista de categorías en página de inicio.
-
     const [category] = await connection.query(
       `SELECT distinct(category) FROM product`
     );
-
-    // WHERE product.category = ?
-    // [`%${name}%``%${search}%`, `%${search}%`]
 
     let categories = [];
     for (let i = 0; i < category.length; i++) {
@@ -40,14 +33,7 @@ const homeLists = async (req, res, next) => {
       });
     }
 
-    // El res.send debería ir al final ya que solo se envía una vez
-    /* res.send({
-      status: 'OK',
-      data: [categories],
-    }); */
-
     // Lista de productos destacados en página de inicio.
-
     const [product] = await connection.query(
       `
         SELECT product.id, product.name, product.price, product.createdAt, product.sold
@@ -59,18 +45,17 @@ const homeLists = async (req, res, next) => {
       `
     );
 
-    // LIMIT 10 recogerá los 10 primeros resultados de la consulta
-    // Como vamos a recoger los productos con fecha de creación (createdAt) más nuevos, no hace falta
-    // WHERE product.name = ?
-    // [`%${name}%``%${search}%`, `%${search}%`]
-
-    // Ojooo esto está muy guay, funciona, pero podemos sacarlo ya en la consulta xD
     let featuredProducts = [];
     for (let i = 0; i < 10; i++) {
+      const [photos] = await connection.query(
+        `select name from product_photo where idProduct = ?`,
+        [product[i].id]
+      );
       featuredProducts.push({
-        // product - es featuredProducts
-        name: product[i].name, // productName - Se sacaría solo name de product
-        // molaría añadir más propiedades, rollo precio, imágenes, etc
+        name: product[i].name,
+        price: product[i].price,
+        date: product[i].createdAt,
+        photos,
       });
     }
 
