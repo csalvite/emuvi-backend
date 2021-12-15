@@ -1,0 +1,1198 @@
+{
+	"info": {
+		"_postman_id": "9cec6f1d-101a-468b-b50e-8e4dd355d653",
+		"name": "EMUVI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users Registro Login y Modificaciones",
+			"item": [
+				{
+					"name": "New User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"asdfasd\",\n    \"email\": \"info.csalvite@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/home/cesar/Imágenes/Metadinha com amigos.jpeg"
+								},
+								{
+									"key": "name",
+									"value": "hide",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "toi mu escondido",
+									"type": "text"
+								},
+								{
+									"key": "birthday",
+									"value": "1998-02-18",
+									"type": "text"
+								},
+								{
+									"key": "biography",
+									"value": "15 primaBras, amigo de mis amigos, tokas a los míos y te las brás con migo xdd",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "666555444",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "Avenida del Rocío nº4",
+									"type": "text"
+								},
+								{
+									"key": "postalCode",
+									"value": "15230",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Serra de Outes",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "A Coruña",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/users/register/68731a5bef3ad7e0798f7422b75037d18f91acbd36ca4bf6c81b0987949044eeee960f294458c382",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"register",
+								"68731a5bef3ad7e0798f7422b75037d18f91acbd36ca4bf6c81b0987949044eeee960f294458c382"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"info.csalvite@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users/login",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"123456\",\n    \"confirmPassword\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users/49",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"49"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Public User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{server}}/users/10",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Avatar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/home/cesar/Imágenes/Metadinha com amigos.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/users/10/avatar",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"10",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newEmail\": \"csalvite@gmail.com\",\n    \"newUsername\": \"escondido\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users/10",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Coca\",\n    \"lastname\": \"Cola\",\n    \"biography\": \"Mis ninios, fiel a los mi0s, 14 primaBras, MDLR asta la mu3rt\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users/10/info",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"10",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"123456\",\n    \"newPassword\": \"abc123.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users/10/password",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"10",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Private User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/profile/10",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"profile",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Email changed",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/users/mail/f921110a801558aac15d4b87b527e0b1c1006d2ee1124ceb2d177251d2eaca4e9dd9d8e25e6f1d75",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"mail",
+								"f921110a801558aac15d4b87b527e0b1c1006d2ee1124ceb2d177251d2eaca4e9dd9d8e25e6f1d75"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product List Profile User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/2/products",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"2",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Product Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/products/16",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"consolador de abuela roto\",\n    \"price\": 15.99,\n    \"description\": \"apenas usado por mi abuela\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/products/16",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "search",
+									"value": "pro",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "price",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "direction",
+									"value": "asc",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/products",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Cerveza 1906",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1.80",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "La puta mejor cerveza",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "otros",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/products/new",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/products/15",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product Photo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/products/16/photos/31",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products",
+								"16",
+								"photos",
+								"31"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product Photo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/home/cesar/Imágenes/cuteCat.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/products/16/addphoto",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products",
+								"16",
+								"addphoto"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Profile",
+			"item": [
+				{
+					"name": "User Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/2/products",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"2",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Offers",
+			"item": [
+				{
+					"name": "List User Bookings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/50/bookings?order=createdAt&direction=DESC",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"50",
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "createdAt"
+								},
+								{
+									"key": "direction",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List My Offers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/50/offers",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"50",
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Denied Bookings",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/50/bookings",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"50",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Sales",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/50/offers?id=41",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"50",
+								"offers"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "41"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Offer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser2}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/offers/17/new/12",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"offers",
+								"17",
+								"new",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "See my offers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/users/9/offers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"9",
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deny Offer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/50/offers/44/deny",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"50",
+								"offers",
+								"44",
+								"deny"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept Offer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "street",
+									"value": "Avenida del Rocío Nº4",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Serra de Outes",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "15:00",
+									"type": "text"
+								},
+								{
+									"key": "date",
+									"value": "15-12-2021",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/users/50/offers/54/accept",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"50",
+								"offers",
+								"54",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "INICIO",
+			"item": [
+				{
+					"name": "Inicio de la página",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorite Products",
+			"item": [
+				{
+					"name": "List User Favorite Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/9/favorites?order=createdAt&direction=ASC",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"9",
+								"favorites"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "createdAt"
+								},
+								{
+									"key": "direction",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Fav Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/products/8/favorite",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"products",
+								"8",
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Fav Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/user/9/favorites/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"user",
+								"9",
+								"favorites",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ratings",
+			"item": [
+				{
+					"name": "New Rating",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser2}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vote\": 5,\n    \"comment\": \"Muy muy buen tipo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users/9/votes",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"9",
+								"votes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Vote",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser2}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vote\": 2,\n    \"comment\": \"es un mierdas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/users/vote/8",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"vote",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rating",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{myuser2}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/vote/8",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"vote",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List User Ratings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/users/2/vote",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"2",
+								"vote"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": ""
+		},
+		{
+			"key": "myuser",
+			"value": ""
+		},
+		{
+			"key": "myuser2",
+			"value": ""
+		}
+	]
+}
