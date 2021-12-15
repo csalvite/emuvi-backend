@@ -122,7 +122,7 @@ async function newOfferMail(email, userBuyer, productName, idUser) {
         <p> El usuario ${userBuyer} quiere comprar tu producto ${productName}!<p>
         <p> Puedes gestionar tus ofertas a través del siguiente enlace: </p>
         <p> ${PUBLIC_HOST}/users/${idUser}/offers </p>
-        <img src=${emailPathImage} />
+        <img src="${PUBLIC_HOST}/emailPhotos/BienvenidoEMUVI.png" />
     `;
 
     await sendMail({

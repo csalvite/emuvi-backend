@@ -18,7 +18,7 @@ app.use(morgan('dev'));
 app.use(fileUpload());
 
 // Cargamos las fotos para mails
-app.use(express.static('emailPhotos'));
+app.use(express.static('static'));
 
 /*
  * #################
