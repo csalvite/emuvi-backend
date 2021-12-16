@@ -119,10 +119,10 @@ async function verifyEmail(email, registrationCode) {
 
 async function newOfferMail(email, userBuyer, productName, idUser) {
     const emailBody = `
-        <p> El usuario ${userBuyer} quiere comprar tu producto ${productName}!<p>
+        <img style="width:250px;" src='${PUBLIC_HOST}/emailPhotos/BienvenidoEMUVI.png' />
+        <p> El usuario <strong>${userBuyer}</strong> quiere comprar tu producto <strong>${productName}</strong>!<p>
         <p> Puedes gestionar tus ofertas a través del siguiente enlace: </p>
         <p> ${PUBLIC_HOST}/users/${idUser}/offers </p>
-        <img src="${PUBLIC_HOST}/emailPhotos/BienvenidoEMUVI.png" />
     `;
 
     await sendMail({

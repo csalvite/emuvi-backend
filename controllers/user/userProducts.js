@@ -24,7 +24,7 @@ const userProducts = async (req, res, next) => {
         }
 
         let products = [];
-        if (product.length > 1) {
+        if (product.length > 0) {
             for (let i = 0; i < product.length; i++) {
                 const [photos] = await connection.query(
                     `select name from product_photo where idProduct = ?`,
