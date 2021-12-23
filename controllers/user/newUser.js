@@ -24,13 +24,15 @@ const newUser = async (req, res, next) => {
 
         // Comprobamos si el email existe en la base de datos.
         const [user] = await connection.query(
-            `SELECT id FROM user WHERE email = ?`,
-            [email]
+            `SELECT id FROM user WHERE email = ? or username = ?`,
+            [email, username]
         );
 
         // Si el email ya existe lanzamos un error.
         if (user.length > 0) {
-            const error = new Error('Ya existe un usuario con ese email');
+            const error = new Error(
+                'Ya existe un usuario con ese email o nombre de usuario'
+            );
             error.httpStatus = 409;
             throw error;
         }
