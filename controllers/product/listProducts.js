@@ -70,9 +70,7 @@ const listProducts = async (req, res, next) => {
 
         res.send({
             status: 'ok',
-            data: {
-                data,
-            },
+            data,
         });
     } catch (error) {
         next(error);
