@@ -56,7 +56,7 @@ async function sendMail({ to, subject, body }) {
             text: body,
             html: `<html>
                     <body>
-                      <div>
+                      <div style="text-align: center;">
                         <h1>${subject}</h1>
                         <p>${body}</p>
                       </div>
@@ -99,8 +99,8 @@ async function changeEmail(email, registrationCode) {
 async function verifyEmail(email, registrationCode) {
     const emailBody = `
   <h2> Te acabas de registrar en EMUVI </h2>
-  <p> Pulsa el siguiente enlace para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
-  <img src="" alt="newOffer" />
+  <p> Pulsa sobre la imagen o en el siguiente enlace para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
+  <a href=${PUBLIC_HOST}/users/register/${registrationCode}><img src="https://i.ibb.co/gVYWWKb/Bienvenido-EMUVI.png" alt="Bienvenido-EMUVI" width="500" border="0"></a>
   `;
 
     //Enviamos el mensaje al correo del usuario.
@@ -119,10 +119,10 @@ async function verifyEmail(email, registrationCode) {
 
 async function newOfferMail(email, userBuyer, productName, idUser) {
     const emailBody = `
-        <p> El usuario ${userBuyer} quiere comprar tu producto ${productName}!<p>
-        <p> Puedes gestionar tus ofertas a través del siguiente enlace: </p>
+        <p> El usuario <strong>${userBuyer}</strong> quiere comprar tu producto <strong>${productName}</strong>!<p>
+        <p> Puedes gestionar tus ofertas a través del siguiente enlace o pinchando sobre la imagen: </p>
         <p> ${PUBLIC_HOST}/users/${idUser}/offers </p>
-        <img src=${emailPathImage} />
+        <a href=${PUBLIC_HOST}/users/${idUser}/offers><img src="https://i.ibb.co/c23zp3h/Email-oferta-de-compra.png" alt="Email_oferta_de_compra" border="0"></a>
     `;
 
     await sendMail({
@@ -153,6 +153,7 @@ async function offerAccepted(
     <p> La compra se realizará en: <strong>${street}, ${city}</strong> a las <strong>${time}</strong> el día <strong>${date}</strong> </p>
     <p> No llegues tarde! </p>
     <p> Tienes más información en tu perfil, apartado "Ofertas Enviadas": ${PUBLIC_HOST}/users/${idUser}/ </p>
+    <a href=${PUBLIC_HOST}/users/${idUser}><img src="https://i.ibb.co/LNkCc8B/Email-propuesta-aceptada.png" alt="Email-propuesta-aceptada" width="500" border="0"></a>
   `;
 
     await sendMail({
@@ -172,7 +173,8 @@ async function offerDeniedMail(email, sellerUser, productName) {
     const emailBody = `
     <p> Lamentamos comunicarte que el usuario ${sellerUser} ha denegado la compra del producto ${productName}. </p>
     <p> Pero no te preocupes, hay más productos en nuestro catálogo a la espera! </p>
-    <p> ${PUBLIC_HOST}/products </p>
+    <p> Pulsa sobre la imagen o en el siguiente enlace para ver nuestro catálogo de productos en venta: ${PUBLIC_HOST}/products </p>
+    <a href=${PUBLIC_HOST}/products><img src="https://i.ibb.co/N34VyFd/Email-propuesta-rechazada.png" alt="Email-propuesta-rechazada" width="500" border="0"></a>
   `;
 
     await sendMail({

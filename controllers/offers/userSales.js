@@ -9,7 +9,7 @@ const userSales = async (req, res, next) => {
         const { idUser } = req.params;
 
         const [user] = await connection.query(
-            `select distinctrow user.id as idVendedor, concat(user.name, " ", user.lastname) as sellerName,
+            `select distinctrow user_reserve_product.id as idReserve, user.id as idVendedor, concat(user.name, " ", user.lastname) as sellerName,
             (select concat(user.name, " ", user.lastname)
                 from user
                 where user.id = user_reserve_product.idUserBuyer
@@ -34,6 +34,7 @@ const userSales = async (req, res, next) => {
         let offers = [];
         for (let i = 0; i < user.length; i++) {
             offers.push({
+                id: user[i].idReserve,
                 me: user[i].sellerName,
                 buyerName: user[i].buyerName,
                 product: user[i].productName,
