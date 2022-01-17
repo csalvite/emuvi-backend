@@ -1,12 +1,18 @@
 const morgan = require('morgan');
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const fileUpload = require('express-fileupload');
 
 // Creamos servidor express
 const app = express();
 
 const { PORT } = process.env;
+
+// Problemas con Cors a la hora de realizar peticiones a servidor, por lo que probamos lo siguiente
+app.use(cors());
+
+app.options('*', cors());
 
 // Desserializa body en formato raw
 app.use(express.json());
