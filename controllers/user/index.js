@@ -14,6 +14,7 @@ const editUserPassword = require('./editUserPassword');
 const userProducts = require('./userProducts');
 const getPrivateUser = require('./getPrivateUser');
 const confirmNewUserMail = require('./confirmNewUserMail');
+const loginAuth0 = require('./loginAuth0');
 
 module.exports = {
     newUser,
@@ -28,4 +29,5 @@ module.exports = {
     userProducts,
     getPrivateUser,
     confirmNewUserMail,
+    loginAuth0,
 };

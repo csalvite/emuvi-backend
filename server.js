@@ -59,6 +59,7 @@ const {
     userProducts,
     getPrivateUser,
     confirmNewUserMail,
+    loginAuth0,
 } = require('./controllers/user');
 
 /*
@@ -135,10 +136,14 @@ app.get('/', homeLists);
 */
 
 // Nuevo usuario
-app.post('/users', newUser);
+// newUser
+app.post('/users', validateUser);
+
+// Nuevo usuario con Auth0
+app.post('/newuser', loginAuth0);
 
 // Completa registro y activa usuario
-app.post('/users/register/:registrationCode', validateUser);
+app.get('/users/register/:registrationCode', confirmNewUserMail);
 
 // Logeamos a un usuario y retornamos un token.
 app.post('/users/login', loginUser);

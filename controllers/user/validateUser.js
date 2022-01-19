@@ -1,5 +1,11 @@
 const getDB = require('../../database/getDB');
-const { savePhoto } = require('../../helpers');
+const saltRounds = 10;
+const {
+    generateRandomString,
+    verifyEmail,
+    savePhoto,
+} = require('../../helpers');
+
 const path = require('path');
 
 const { UPLOADS_DIRECTORY } = process.env;
@@ -10,8 +16,10 @@ const validateUser = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { registrationCode } = req.params;
         const {
+            username,
+            email,
+            password,
             name,
             lastname,
             birthday,
@@ -26,17 +34,20 @@ const validateUser = async (req, res, next) => {
         } = req.body;
 
         const [user] = await connection.query(
-            `select id from user where registrationCode = ?`,
-            [registrationCode]
+            `select id from user where email = ?`,
+            [email]
         );
 
-        if (user.length < 1) {
+        if (user.length > 0) {
             const error = new Error(
-                'No existen usuarios pendientes de validación'
+                'Ya existe un usuario con ese email en la base de datos'
             );
-            error.httpStatus = 404;
+            error.httpStatus = 403;
             throw error;
         }
+
+        // Creamos un código de registro de un solo uso.
+        const registrationCode = generateRandomString(40);
 
         // Si el usuario está pendiente de validar
         await connection.query(
@@ -64,13 +75,18 @@ const validateUser = async (req, res, next) => {
 
         // Si están todos los datos obligatorios, actualizamos el usuario final
         await connection.query(
-            `update user set name = ?, lastname = ?, avatar = ?, birthday = ?, biography = ?, registrationCode = null, createdAt = ?, phone = ?, latitude = ?, longitude = ?, street = ?, postalCode = ?, city = ?, province = ? where id = ?`,
+            `insert into user (username, name, lastname, password, email, birthday, avatar, biography, registrationCode, createdAt, phone, latitude, longitude, street, postalCode, city, province) 
+            values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
+                username,
                 name,
                 lastname,
-                avatarName,
+                password,
+                email,
                 birthday,
+                avatarName,
                 biography,
+                registrationCode,
                 new Date(),
                 phone,
                 latitude,
@@ -79,13 +95,15 @@ const validateUser = async (req, res, next) => {
                 postalCode,
                 city,
                 province,
-                user[0].id,
             ]
         );
 
+        // Enviamos un mensaje de verificación al email del usuario.
+        await verifyEmail(email, registrationCode);
+
         res.send({
-            status: 'OK',
-            message: 'Usuario registrado y validado',
+            status: 'ok',
+            message: 'Usuario registrado, comprueba tu email para activarlo',
         });
     } catch (error) {
         next(error);
