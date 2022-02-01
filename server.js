@@ -136,14 +136,14 @@ app.get('/', homeLists);
 */
 
 // Nuevo usuario
-// newUser
-app.post('/users', validateUser);
+// validateUser
+app.post('/users', newUser);
 
 // Nuevo usuario con Auth0
-app.post('/newuser', loginAuth0);
+// app.post('/newuser', loginAuth0);
 
 // Completa registro y activa usuario
-app.get('/users/register/:registrationCode', confirmNewUserMail);
+app.post('/users/register/:registrationCode', validateUser);
 
 // Logeamos a un usuario y retornamos un token.
 app.post('/users/login', loginUser);
@@ -152,13 +152,7 @@ app.post('/users/login', loginUser);
 app.get('/users/:idUser', userExists, getPublicUser); // Si el usuario es anónimo no tiene una Authorization, podrá ver igual los datos?
 
 // Info para el usuario perfil privado
-app.get(
-    '/users/profile/:idUser',
-    isAuth,
-    userExists,
-    canEditUser,
-    getPrivateUser
-);
+app.get('/profile', isAuth, getPrivateUser);
 
 // Actualizamos el avatar de un usuario
 app.put(

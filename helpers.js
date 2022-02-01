@@ -85,7 +85,7 @@ async function changeEmail(email, registrationCode) {
 
     await sendMail({
         to: email,
-        subject: 'Activa tu cuenta',
+        subject: 'Nuevo correo para activación de usuario',
         body: emailBody,
     });
 }
@@ -95,12 +95,12 @@ async function changeEmail(email, registrationCode) {
  * ## verifyEmail ##
  * #################
  */
-
+// ${PUBLIC_HOST}/users/register/${registrationCode}
 async function verifyEmail(email, registrationCode) {
     const emailBody = `
   <h2> Te acabas de registrar en EMUVI </h2>
   <p> Pulsa sobre la imagen o en el siguiente enlace para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
-  <a href=${PUBLIC_HOST}/users/register/${registrationCode}><img src="https://i.ibb.co/gVYWWKb/Bienvenido-EMUVI.png" alt="Bienvenido-EMUVI" width="500" border="0"></a>
+  <a href=http://localhost:3000/validate/${registrationCode}><img src="https://i.ibb.co/gVYWWKb/Bienvenido-EMUVI.png" alt="Bienvenido-EMUVI" width="500" border="0"></a>
   `;
 
     //Enviamos el mensaje al correo del usuario.
