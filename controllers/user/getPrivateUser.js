@@ -33,6 +33,7 @@ const getPrivateUser = async (req, res, next) => {
             lastname: user[0].lastname,
             mediaVotes: user[0].avgVote,
             avatar: user[0].avatar,
+            active: user[0].active,
             city: user[0].city,
             province: user[0].province,
             postalCode: user[0].postalCode,

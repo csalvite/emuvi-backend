@@ -60,6 +60,7 @@ const editUser = async (req, res, next) => {
 
             // Si el email existe lanzamos un error
             if (emailQuery.length > 0) {
+                console.log('email devuelto?');
                 const error = new Error(
                     'Ya existe un usuario con ese email en la base de datos'
                 );
@@ -72,7 +73,7 @@ const editUser = async (req, res, next) => {
             // actualizamos el usuario junto con el codigo de registro
             await connection.query(
                 `UPDATE user SET email = ?, registrationCode = ?, active = 0, modifiedAt = ?
-        WHERE id = ?`,
+                    WHERE id = ?`,
                 [newEmail, registrationCode, new Date(), idUser]
             );
 
@@ -87,7 +88,19 @@ const editUser = async (req, res, next) => {
       Username
       
       En caso de que haya username comprobamos si es distinto al existente
+      y que no esté en uso por otro usuario
     */
+
+        const [usernameQuery] = await connection.query(
+            `SELECT username FROM user WHERE username = ?`,
+            [newUsername]
+        );
+
+        if (usernameQuery.length > 0) {
+            const error = new Error('El nombre de usuario ya está en uso');
+            error.httpStatus = 409;
+            throw error;
+        }
 
         if (newUsername && newUsername !== user[0].username) {
             await connection.query(

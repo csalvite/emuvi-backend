@@ -14,6 +14,7 @@ const {
     SENDGRID_API_KEY,
     SENDGRID_FROM,
     PUBLIC_HOST,
+    FRONT_HOST,
     UPLOADS_DIRECTORY,
     EMAIL_PHOTOS_DIRECTORY,
 } = process.env;
@@ -80,7 +81,7 @@ async function sendMail({ to, subject, body }) {
 async function changeEmail(email, registrationCode) {
     const emailBody = `
     <h2> Confirmación de cambio de correo </h2>
-    <p> Pulsa en el siguiente enlace para activar tu cuenta con el nuevo correo proporcionado ${PUBLIC_HOST}/users/mail/${registrationCode} </p>
+    <p> Pulsa en el siguiente enlace para activar tu cuenta con el nuevo correo proporcionado ${FRONT_HOST}/users/mail/${registrationCode} </p>
     `;
 
     await sendMail({
@@ -99,8 +100,8 @@ async function changeEmail(email, registrationCode) {
 async function verifyEmail(email, registrationCode) {
     const emailBody = `
   <h2> Te acabas de registrar en EMUVI </h2>
-  <p> Pulsa sobre la imagen o en el siguiente enlace para verificar tu cuenta: ${PUBLIC_HOST}/users/register/${registrationCode} </p>
-  <a href=http://localhost:3000/validate/${registrationCode}><img src="https://i.ibb.co/gVYWWKb/Bienvenido-EMUVI.png" alt="Bienvenido-EMUVI" width="500" border="0"></a>
+  <p> Pulsa sobre la imagen o en el siguiente enlace para verificar tu cuenta: ${FRONT_HOST}/users/register/${registrationCode} </p>
+  <a href=${FRONT_HOST}/validate/${registrationCode}><img src="https://i.ibb.co/gVYWWKb/Bienvenido-EMUVI.png" alt="Bienvenido-EMUVI" width="500" border="0"></a>
   `;
 
     //Enviamos el mensaje al correo del usuario.
@@ -121,8 +122,8 @@ async function newOfferMail(email, userBuyer, productName, idUser) {
     const emailBody = `
         <p> El usuario <strong>${userBuyer}</strong> quiere comprar tu producto <strong>${productName}</strong>!<p>
         <p> Puedes gestionar tus ofertas a través del siguiente enlace o pinchando sobre la imagen: </p>
-        <p> ${PUBLIC_HOST}/users/${idUser}/offers </p>
-        <a href=${PUBLIC_HOST}/users/${idUser}/offers><img src="https://i.ibb.co/c23zp3h/Email-oferta-de-compra.png" alt="Email_oferta_de_compra" border="0"></a>
+        <p> ${FRONT_HOST}/users/${idUser}/offers </p>
+        <a href=${FRONT_HOST}/users/${idUser}/offers><img src="https://i.ibb.co/c23zp3h/Email-oferta-de-compra.png" alt="Email_oferta_de_compra" border="0"></a>
     `;
 
     await sendMail({
@@ -152,8 +153,8 @@ async function offerAccepted(
     <p> El usuario ${sellerUser}, propietario del producto ${productName}, ha aceptado tu propuesta de compra </p>
     <p> La compra se realizará en: <strong>${street}, ${city}</strong> a las <strong>${time}</strong> el día <strong>${date}</strong> </p>
     <p> No llegues tarde! </p>
-    <p> Tienes más información en tu perfil, apartado "Ofertas Enviadas": ${PUBLIC_HOST}/users/${idUser}/ </p>
-    <a href=${PUBLIC_HOST}/users/${idUser}><img src="https://i.ibb.co/LNkCc8B/Email-propuesta-aceptada.png" alt="Email-propuesta-aceptada" width="500" border="0"></a>
+    <p> Tienes más información en tu perfil, apartado "Ofertas Enviadas": ${FRONT_HOST}/users/${idUser}/ </p>
+    <a href=${FRONT_HOST}/users/${idUser}><img src="https://i.ibb.co/LNkCc8B/Email-propuesta-aceptada.png" alt="Email-propuesta-aceptada" width="500" border="0"></a>
   `;
 
     await sendMail({
@@ -174,7 +175,7 @@ async function offerDeniedMail(email, sellerUser, productName) {
     <p> Lamentamos comunicarte que el usuario ${sellerUser} ha denegado la compra del producto ${productName}. </p>
     <p> Pero no te preocupes, hay más productos en nuestro catálogo a la espera! </p>
     <p> Pulsa sobre la imagen o en el siguiente enlace para ver nuestro catálogo de productos en venta: ${PUBLIC_HOST}/products </p>
-    <a href=${PUBLIC_HOST}/products><img src="https://i.ibb.co/N34VyFd/Email-propuesta-rechazada.png" alt="Email-propuesta-rechazada" width="500" border="0"></a>
+    <a href=${FRONT_HOST}/products><img src="https://i.ibb.co/N34VyFd/Email-propuesta-rechazada.png" alt="Email-propuesta-rechazada" width="500" border="0"></a>
   `;
 
     await sendMail({
