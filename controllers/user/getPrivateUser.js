@@ -8,7 +8,7 @@ const getPrivateUser = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { idUser } = req.params;
+        const idUser = req.userAuth.id;
 
         // Comprobamos en el middleware de canEditUser si el usuario que hace la request es el propietario
 
@@ -28,10 +28,12 @@ const getPrivateUser = async (req, res, next) => {
         }
 
         const userInfo = {
+            id: user[0].id,
             name: user[0].name,
             lastname: user[0].lastname,
             mediaVotes: user[0].avgVote,
             avatar: user[0].avatar,
+            active: user[0].active,
             city: user[0].city,
             province: user[0].province,
             postalCode: user[0].postalCode,
