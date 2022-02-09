@@ -34,21 +34,25 @@ const favProducts = async (req, res, next) => {
             );
 
             if (products.length < 1) {
-                data.push('No existen productos para este usuario');
-            } else {
-                for (let i = 0; i < products.length; i++) {
-                    if (!products[i].sold) {
-                        // Obtenemos las fotos de la entrada seleccionada.
-                        const [photos] = await connection.query(
-                            `SELECT name FROM product_photo WHERE idProduct = ?`,
-                            [products[i].id]
-                        );
+                const error = new Error(
+                    'No existen productos para este usuario'
+                );
+                error.httpStatus = 404;
+                throw error;
+            }
 
-                        data.push({
-                            ...products[i],
-                            photos,
-                        });
-                    }
+            for (let i = 0; i < products.length; i++) {
+                if (!products[i].sold) {
+                    // Obtenemos las fotos de la entrada seleccionada.
+                    const [photos] = await connection.query(
+                        `SELECT name FROM product_photo WHERE idProduct = ?`,
+                        [products[i].id]
+                    );
+
+                    data.push({
+                        ...products[i],
+                        photos,
+                    });
                 }
             }
         } else {
@@ -64,21 +68,25 @@ const favProducts = async (req, res, next) => {
             );
 
             if (products.length < 1) {
-                data.push('No existen productos para este usuario');
-            } else {
-                for (let i = 0; i < products.length; i++) {
-                    if (!products[i].sold) {
-                        // Obtenemos las fotos de la entrada seleccionada.
-                        const [photos] = await connection.query(
-                            `SELECT name FROM product_photo WHERE idProduct = ?`,
-                            [products[i].id]
-                        );
+                const error = new Error(
+                    'No existen productos para este usuario'
+                );
+                error.httpStatus = 404;
+                throw error;
+            }
 
-                        data.push({
-                            ...products[i],
-                            photos,
-                        });
-                    }
+            for (let i = 0; i < products.length; i++) {
+                if (!products[i].sold) {
+                    // Obtenemos las fotos de la entrada seleccionada.
+                    const [photos] = await connection.query(
+                        `SELECT name FROM product_photo WHERE idProduct = ?`,
+                        [products[i].id]
+                    );
+
+                    data.push({
+                        ...products[i],
+                        photos,
+                    });
                 }
             }
         }
