@@ -21,7 +21,7 @@ const newProductSchema = Joi.object().keys({
     price: Joi.number()
         .required()
         .min(1)
-        .max(100)
+        .max(1000000)
         .error((errors) => {
             if (
                 errors[0].code === 'any.required' ||
