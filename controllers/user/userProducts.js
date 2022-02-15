@@ -13,7 +13,7 @@ const userProducts = async (req, res, next) => {
         const { idUser } = req.params;
 
         const [product] = await connection.query(
-            `select id, name, price, description, createdAt from product where idUser = ? and sold = false`,
+            `select id, name, price, description, category, createdAt from product where idUser = ? and sold = false`,
             [idUser]
         );
 
@@ -27,14 +27,17 @@ const userProducts = async (req, res, next) => {
         if (product.length > 0) {
             for (let i = 0; i < product.length; i++) {
                 const [photos] = await connection.query(
-                    `select name from product_photo where idProduct = ?`,
+                    `select id, name from product_photo where idProduct = ?`,
                     [product[i].id]
                 );
 
                 products.push({
+                    id: product[i].id,
                     name: product[i].name,
                     price: product[i].price,
                     description: product[i].description,
+                    category: product[i].category,
+                    createdAt: product[i].createdAt,
                     photos,
                 });
             }
@@ -42,9 +45,7 @@ const userProducts = async (req, res, next) => {
 
         res.send({
             status: 'ok',
-            data: {
-                products,
-            },
+            products,
         });
     } catch (error) {
         next(error);
