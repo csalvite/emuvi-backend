@@ -34,28 +34,25 @@ const homeLists = async (req, res, next) => {
         }
 
         // Lista de productos destacados en página de inicio.
-        const [product] = await connection.query(
+        const [products] = await connection.query(
             `
-        SELECT product.id, product.name, product.price, product.createdAt, product.sold
+        SELECT id, name, price, createdAt, sold
         FROM product
-        WHERE product.sold = 0
-        GROUP BY product.id, product.name, product.price, product.createdAt, product.sold
+        WHERE sold = 0
         ORDER BY ${orderBy} ${orderDirection}
         LIMIT 10
       `
         );
 
         let featuredProducts = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < products.length; i++) {
             const [photos] = await connection.query(
-                `select name from product_photo where idProduct = ?`,
-                [product[i].id]
+                `select id, name from product_photo where idProduct = ?`,
+                [products[i].id]
             );
+
             featuredProducts.push({
-                name: product[i].name,
-                price: product[i].price,
-                date: product[i].createdAt,
-                id: product[i].id,
+                ...products[i],
                 photos,
             });
         }
@@ -63,10 +60,7 @@ const homeLists = async (req, res, next) => {
         // Añadí en los resultados las categorias
         res.send({
             status: 'OK',
-            data: {
-                featuredProducts,
-                categories,
-            },
+            featuredProducts,
         });
     } catch (error) {
         next(error);
