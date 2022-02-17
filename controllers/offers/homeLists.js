@@ -9,18 +9,6 @@ const homeLists = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { order, direction } = req.query;
-
-        const validOrderOptions = ['createdAt'];
-
-        const validDirectionOptions = ['DESC', 'ASC'];
-
-        const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
-
-        const orderDirection = validDirectionOptions.includes(direction)
-            ? direction
-            : 'ASC';
-
         // Lista de categorías en página de inicio.
         const [category] = await connection.query(
             `SELECT distinct(category) FROM product`
@@ -39,7 +27,7 @@ const homeLists = async (req, res, next) => {
         SELECT id, name, price, createdAt, sold
         FROM product
         WHERE sold = 0
-        ORDER BY ${orderBy} ${orderDirection}
+        ORDER BY createdAt DESC
         LIMIT 10
       `
         );
