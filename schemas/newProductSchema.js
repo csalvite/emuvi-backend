@@ -36,8 +36,8 @@ const newProductSchema = Joi.object().keys({
 
     description: Joi.string()
         .required()
-        .min(20)
-        .max(500)
+        .min(10)
+        .max(300)
         .error((errors) => {
             switch (errors[0].code) {
                 case 'any.required':
@@ -46,7 +46,7 @@ const newProductSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'La propiedad [description] debe tener entre 20 y 500 caracteres.'
+                        'La propiedad [description] debe tener entre 10 y 300 caracteres.'
                     );
             }
         }),
