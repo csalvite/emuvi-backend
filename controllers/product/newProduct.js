@@ -45,6 +45,7 @@ const newProduct = async (req, res, next) => {
                 // Guardamos la foto en disco y obtenemos su nombre.
                 const photoName = await savePhoto(photo, 1);
                 console.log(photoName);
+
                 // Guardamos la foto en la tabla de fotos_producto.
                 await connection.query(
                     `INSERT INTO product_photo (name, idProduct) VALUES (?, ?)`,
@@ -54,8 +55,9 @@ const newProduct = async (req, res, next) => {
         }
 
         res.send({
-            status: 'OK',
-            message: 'Nuevo producto creado con éxito',
+            status: 200,
+            message: 'Nuevo producto creado con  éxito',
+            data: idProduct,
         });
     } catch (error) {
         next(error);
