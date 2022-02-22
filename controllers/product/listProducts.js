@@ -23,7 +23,7 @@ const listProducts = async (req, res, next) => {
         if (search) {
             const [products] = await connection.query(
                 `
-                    SELECT id, name, price, description, category, createdAt, sold
+                    SELECT id, name, price, description, category, createdAt, sold,idUser
                     FROM product
                     WHERE name like ? or category like ?
                     ORDER BY ${orderBy} ${orderDirection}
@@ -47,7 +47,7 @@ const listProducts = async (req, res, next) => {
             }
         } else {
             const [products] = await connection.query(
-                `SELECT id, name, price, description, category, createdAt, sold
+                `SELECT id, name, price, description, category, createdAt, sold,idUser
                     FROM product
                     ORDER BY ${orderBy} ${orderDirection}`
             );
