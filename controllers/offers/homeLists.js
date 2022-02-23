@@ -24,7 +24,7 @@ const homeLists = async (req, res, next) => {
         // Lista de productos destacados en página de inicio.
         const [products] = await connection.query(
             `
-        SELECT id, name, price, createdAt, sold
+        SELECT id, name, price, createdAt, sold,idUser
         FROM product
         WHERE sold = 0
         ORDER BY createdAt DESC
