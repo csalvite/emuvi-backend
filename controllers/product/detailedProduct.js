@@ -9,8 +9,9 @@ const lookingProduct = async (req, res, next) => {
         const { idProduct } = req.params;
 
         const [products] = await connection.query(
-            `SELECT * FROM product 
-      WHERE product.id = ? and product.sold is false
+            `SELECT product.*, user.latitude as lat, user.longitude as lon
+            FROM product inner join user on (product.idUser = user.id)
+            WHERE product.id = ? and product.sold is false
       `,
             [idProduct]
         );
@@ -38,6 +39,8 @@ const lookingProduct = async (req, res, next) => {
             date: products[0].createdAt,
             modified: products[0].modifiedAt,
             idUser: products[0].idUser,
+            lat: products[0].lat,
+            lon: products[0].lon,
             photos,
         };
 
