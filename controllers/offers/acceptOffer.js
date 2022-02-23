@@ -66,6 +66,11 @@ const acceptOffer = async (req, res, next) => {
             [idOffer]
         );
 
+        // Cambiamos el estado del producto a "vendido" -> sold = 1
+        await connection.query(`update product set sold = 1 where id = ?`, [
+            data[0].idProduct,
+        ]);
+
         // Notificamos
         await offerAccepted(
             data[0].buyerEmail,
