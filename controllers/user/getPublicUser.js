@@ -47,6 +47,7 @@ const getPublicUser = async (req, res, next) => {
                 );
 
                 userProducts.data.push({
+                    id: products[i].id,
                     name: products[i].name,
                     price: products[i].price,
                     description: products[i].description,
@@ -89,6 +90,9 @@ const getPublicUser = async (req, res, next) => {
             lastname: user[0].lastname,
             mediaVotes: user[0].avgVote,
             avatar: user[0].avatar,
+            biography: user[0].biography,
+            email: user[0].email,
+            phone: user[0].phone,
             city: user[0].city,
             province: user[0].province,
             postalCode: user[0].postalCode,
