@@ -46,7 +46,7 @@ async function main() {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(35) NOT NULL,
                 price DECIMAL(7, 2) NOT NULL,
-                category ENUM('Informática', 'Videojuegos', 'Música', 'Moda-Vintage', 'Video', 'Otros') NOT NULL,
+                category ENUM('informatica', 'videojuegos', 'musica', 'modavintage', 'video', 'otros') NOT NULL,
                 description TEXT NOT NULL,
                 sold BOOLEAN DEFAULT false,
                 createdAt DATETIME NOT NULL,
