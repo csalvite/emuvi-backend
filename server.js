@@ -344,7 +344,7 @@ app.delete(
 */
 
 // New Rating
-app.post('/users/:idUser/votes', isAuth, canVote, newRatings);
+app.post('/users/:idUser/votes/:idProduct', isAuth, canVote, newRatings);
 
 // Edit Rating
 app.put('/users/vote/:idVote', isAuth, canEditVote, editRatings);

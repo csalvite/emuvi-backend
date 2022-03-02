@@ -39,7 +39,7 @@ const getPublicUser = async (req, res, next) => {
 
         // Si el usuario tiene productos se cargan en userProducts
         userProducts.data = [];
-        if (products.length > 1) {
+        if (products.length >= 1) {
             for (let i = 0; i < products.length; i++) {
                 const [photos] = await connection.query(
                     `select name from product_photo where idProduct = ?`,
@@ -72,7 +72,7 @@ const getPublicUser = async (req, res, next) => {
 
         // Cargamos un array de objetos con las propiedades de cada valoracion
         userVotes.data = [];
-        if (opinions.length > 1) {
+        if (opinions.length >= 1) {
             for (let i = 0; i < opinions.length; i++) {
                 userVotes.data.push({
                     name: opinions[i].name,

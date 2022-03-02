@@ -80,8 +80,10 @@ async function main() {
                 date DATETIME NOT NULL,
                 idUserVoted INT NOT NULL,
                 idUser INT NOT NULL,
+                idProduct INT NOT NULL,
                 FOREIGN KEY (idUserVoted) REFERENCES user(id) ON DELETE CASCADE,
-                FOREIGN KEY (idUser) REFERENCES user(id))`);
+                FOREIGN KEY (idUser) REFERENCES user(id),
+                FOREIGN KEY (idProduct) REFERENCES product(id))`);
 
         await connection.query(`                    
             CREATE TABLE user_reserve_product(
@@ -125,9 +127,9 @@ async function main() {
             `insert into product(name, price, category, description, createdAt, idUser)
                 values('disco melendi', 20.50, 'musica', 'esto es una falda', '2021-11-24', 2),
                 ('procesador', 45.50, 'informatica', 'esto es una falda', '2021-12-01', 2),
-                ('la bella y la bestia', 19.99, 'video', 'esto es una falda', '2020-11-04', 7),
-                ('boina', 25.11, 'moda-vintage', 'esto es una falda', '2020-12-31', 7),
-                ('sosten', 2, 'moda-vintage', 'esto es una falda', '2021-01-06', 3),
+                ('la bella y la bestia', 19.99, 'video', 'esto es una falda', '2020-11-04', 1),
+                ('boina', 25.11, 'modavintage', 'esto es una falda', '2020-12-31', 7),
+                ('sosten', 2, 'modavintage', 'esto es una falda', '2021-01-06', 3),
                 ('memorias ram', 33.33, 'informatica', 'esto es una falda', '2020-10-23', 3),
                 ('camara de fotos', 40, 'video', 'esto es una falda', '2021-10-02', 6),
                 ('camara de video', 10.50, 'video', 'esto es una falda', '2021-10-06', 6),
@@ -143,33 +145,33 @@ async function main() {
 
         await connection.query(
             `insert into product_photo(name, idProduct)
-            values ('foto.jpg', 1),
-            ('foto.jpg', 1),
-            ('foto.jpg', 12),
-            ('foto.jpg', 10),
-            ('foto.jpg', 10),
-            ('foto.jpg', 9),
-            ('foto.jpg', 10),
-            ('foto.jpg', 6),
-            ('foto.jpg', 6),
-            ('foto.jpg', 2),
-            ('foto.jpg', 4),
-            ('foto.jpg', 10),
-            ('foto.jpg', 9),
-            ('foto.jpg', 9),
-            ('foto.jpg', 8),
-            ('foto.jpg', 8),
-            ('foto.jpg', 5),
-            ('foto.jpg', 5),
-            ('foto.jpg', 2),
-            ('foto.jpg', 1),
-            ('foto.jpg', 6),
-            ('foto.jpg', 5),
-            ('foto.jpg', 4),
-            ('foto.jpg', 3),
-            ('foto.jpg', 2),
-            ('foto.jpg', 3),
-            ('foto.jpg', 4);`
+            values ('1a65892a-e6b6-406d-af94-b9e4614e6920.jpg', 1),
+            ('1a65892a-e6b6-406d-af94-b9e4614e6920.jpg', 1),
+            ('4d205eb9-0eac-4dcc-a841-761504ab23f8.jpg', 12),
+            ('4d205eb9-0eac-4dcc-a841-761504ab23f8.jpg', 10),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 10),
+            ('4d205eb9-0eac-4dcc-a841-761504ab23f8.jpg', 9),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 10),
+            ('4ec05376-a14b-45a5-b7a5-15c91286bfbb.jpg', 6),
+            ('4ec05376-a14b-45a5-b7a5-15c91286bfbb.jpg', 6),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 2),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 4),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 10),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 9),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 9),
+            ('4d205eb9-0eac-4dcc-a841-761504ab23f8.jpg', 8),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 8),
+            ('1a65892a-e6b6-406d-af94-b9e4614e6920.jpg', 5),
+            ('1a65892a-e6b6-406d-af94-b9e4614e6920.jpg', 5),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 2),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 1),
+            ('4ec05376-a14b-45a5-b7a5-15c91286bfbb.jpg', 6),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 5),
+            ('7b3d33d9-5d4b-4623-b944-2160cc12bfa6.jpg', 4),
+            ('4d205eb9-0eac-4dcc-a841-761504ab23f8.jpg', 3),
+            ('4ec05376-a14b-45a5-b7a5-15c91286bfbb.jpg', 2),
+            ('4ec05376-a14b-45a5-b7a5-15c91286bfbb.jpg', 3),
+            ('4ec05376-a14b-45a5-b7a5-15c91286bfbb.jpg', 4);`
         );
 
         console.log('Fotos de producto insertadas');
@@ -189,14 +191,14 @@ async function main() {
         console.log('Productos favoritos insertados');
 
         await connection.query(
-            `insert into user_vote(comment, vote, date, idUserVoted, idUser)
-                values('comentario', 2, '2021-12-03', 2, 5),
-                ('comentario', 5, '2021-12-01', 1, 6),
-                ('comentario', 3, '2021-11-03', 3, 2),
-                ('comentario', 1, '2020-08-03', 5, 2),
-                ('comentario', 4, '2020-12-31', 5, 8),
-                ('comentario', 2, '2021-11-05', 5, 7),
-                ('comentario', 5, '2021-09-22', 2, 4);`
+            `insert into user_vote(comment, vote, date, idUserVoted, idUser, idProduct)
+                values('Esto es un comentario', 2, '2021-12-03', 2, 5, 1),
+                ('Esto es un comentario', 5, '2021-12-01', 1, 6, 3),
+                ('Esto es un comentario', 3, '2021-11-03', 3, 2, 4),
+                ('Esto es un comentario', 1, '2020-08-03', 5, 2, 6),
+                ('Esto es un comentario', 4, '2020-12-31', 5, 8, 7),
+                ('Esto es un comentario', 2, '2021-11-05', 5, 7, 8),
+                ('Esto es un comentario', 5, '2021-09-22', 2, 4, 9);`
         );
 
         console.log('Votos insertados');

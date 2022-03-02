@@ -9,7 +9,7 @@ const newRatings = async (req, res, next) => {
 
         const { vote, comment } = req.body;
 
-        const { idUser } = req.params;
+        const { idUser, idProduct } = req.params;
 
         const options = [0, 1, 2, 3, 4, 5];
 
@@ -27,9 +27,9 @@ const newRatings = async (req, res, next) => {
 
         await connection.query(
             `
-            INSERT INTO user_vote (vote, comment, idUser, idUserVoted, date)
-            VALUES (?, ?, ?, ?, ?)`,
-            [vote, comment, req.userAuth.id, idUser, new Date()]
+            INSERT INTO user_vote (vote, comment, idUser, idUserVoted, idProduct, date)
+            VALUES (?, ?, ?, ?, ?, ?)`,
+            [vote, comment, req.userAuth.id, idUser, idProduct, new Date()]
         );
 
         res.send({
