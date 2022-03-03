@@ -100,7 +100,7 @@ async function changeEmail(email, registrationCode) {
 async function verifyEmail(email, registrationCode) {
     const emailBody = `
   <h2> Te acabas de registrar en EMUVI </h2>
-  <p> Pulsa sobre la imagen o en el siguiente enlace para verificar tu cuenta: ${FRONT_HOST}/users/register/${registrationCode} </p>
+  <p> Pulsa sobre la imagen para verificar tu cuenta: </p>
   <a href=${FRONT_HOST}/validate/${registrationCode}><img src="https://i.ibb.co/gVYWWKb/Bienvenido-EMUVI.png" alt="Bienvenido-EMUVI" width="500" border="0"></a>
   `;
 
@@ -174,7 +174,7 @@ async function offerDeniedMail(email, sellerUser, productName) {
     const emailBody = `
     <p> Lamentamos comunicarte que el usuario ${sellerUser} ha denegado la compra del producto ${productName}. </p>
     <p> Pero no te preocupes, hay más productos en nuestro catálogo a la espera! </p>
-    <p> Pulsa sobre la imagen o en el siguiente enlace para ver nuestro catálogo de productos en venta: ${PUBLIC_HOST}/products </p>
+    <p> Pulsa sobre la imagen para ver nuestro catálogo de productos en venta: </p>
     <a href=${FRONT_HOST}/products><img src="https://i.ibb.co/N34VyFd/Email-propuesta-rechazada.png" alt="Email-propuesta-rechazada" width="500" border="0"></a>
   `;
 
