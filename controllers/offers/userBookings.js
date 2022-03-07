@@ -25,7 +25,7 @@ const userBookings = async (req, res, next) => {
             : 'ASC';
 
         const [user] = await connection.query(
-            `select distinctrow user.id as idBuyer, concat(user.name, " ", user.lastname) as buyerName,
+            `select distinctrow user_reserve_product.id, user.id as idBuyer, concat(user.name, " ", user.lastname) as buyerName,
             (select user.id
                 from user
                 where user.id = user_reserve_product.idUserOwner
@@ -55,6 +55,7 @@ const userBookings = async (req, res, next) => {
         let bookings = [];
         for (let i = 0; i < user.length; i++) {
             bookings.push({
+                id: user[i].id,
                 sellerId: user[i].sellerId,
                 buyer: user[i].buyerName,
                 seller: user[i].sellerName,

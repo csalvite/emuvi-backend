@@ -1,10 +1,10 @@
 /* 
-    Elimina las reservas en estado "denegado" del usuario
+    Endpoint que borrará las ofertas recibidas por el usuario según el estado recibido por query
 */
 
 const getDB = require('../../database/getDB');
 
-const deleteUserBookings = async (req, res, next) => {
+const deleteUserSales = async (req, res, next) => {
     let connection;
 
     try {
@@ -12,33 +12,50 @@ const deleteUserBookings = async (req, res, next) => {
 
         const { idUser } = req.params;
 
-        const [user] = await connection.query(
-            `select id
-              from user_reserve_product
-              where idUserBuyer = ? and reserveStatus = "denegada" 
-              or 
-              idUserOwner = ? and reserveStatus = "denegada"`,
-            [idUser, idUser]
-        );
+        // Por query podemos recoger el id de la oferta a borrar o el estado, si quiere borrar todas las de un estado en concreto
+        const { id, status } = req.query;
 
-        if (user.length < 1) {
-            const error = new Error(
-                'No hay reservas que consten en estado "denegada" para eliminar'
-            );
-            error.httpStatus = 404;
+        if (!id && !status) {
+            const error = new Error('No se ha idicado qué ofertas eliminar.');
+            error.httpStatus = 400;
             throw error;
         }
 
-        for (let i = 0; i < user.length; i++) {
+        // Variable para almacenar el mensaje que se enviará en res.send
+        let message;
+        if (id) {
+            // Si existe idOffer a borrar, la eliminamos
             await connection.query(
-                `delete from user_reserve_product where id = ?`,
-                [user[i].id]
+                `delete from user_reserve_product where id = ? and idUserBuyer = ?`,
+                [id, idUser]
             );
+
+            message = 'Oferta eliminada correctamente';
+        }
+
+        // Eliminamos por estado
+        if (status) {
+            // Si indica el tipo de estado que quiere eliminar
+            const validOptions = ['pendiente', 'aceptada', 'denegada'];
+            if (!validOptions.includes(status)) {
+                const error = new Error(
+                    'Debes indicar un estado correcto para eliminar'
+                );
+                error.httpStatus = 404;
+                throw error;
+            }
+
+            await connection.query(
+                `delete from user_reserve_product where reserveStatus = ? and idUserBuyer = ?`,
+                [status, idUser]
+            );
+
+            message = `Ofertas del tipo ${status} eliminadas correctamente`;
         }
 
         res.send({
             status: 'OK',
-            message: 'Reservas en estado "Denegada" eliminadas.',
+            message,
         });
     } catch (error) {
         next(error);
@@ -47,4 +64,4 @@ const deleteUserBookings = async (req, res, next) => {
     }
 };
 
-module.exports = deleteUserBookings;
+module.exports = deleteUserSales;
