@@ -16,7 +16,7 @@ const addFavProduct = async (req, res, next) => {
 
         if (favExits.length > 0) {
             const error = new Error('Ya tienes ese producto en tus favoritos');
-            error.httpStatus = 404;
+            error.httpStatus = 400;
             throw error;
         }
 
