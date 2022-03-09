@@ -13,7 +13,7 @@ const userProducts = async (req, res, next) => {
         const { idUser } = req.params;
 
         const [product] = await connection.query(
-            `select id, name, price, description, category, createdAt from product where idUser = ? and sold = false`,
+            `select id, name, price, description, category, sold, createdAt from product where idUser = ? and sold = 0`,
             [idUser]
         );
 
@@ -35,6 +35,7 @@ const userProducts = async (req, res, next) => {
                     id: product[i].id,
                     name: product[i].name,
                     price: product[i].price,
+                    sold: product[i].sold,
                     description: product[i].description,
                     category: product[i].category,
                     createdAt: product[i].createdAt,

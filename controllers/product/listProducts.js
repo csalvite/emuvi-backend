@@ -8,7 +8,13 @@ const listProducts = async (req, res, next) => {
 
         const { search, order, direction } = req.query;
 
-        const validOrderOptions = ['createdAt', 'name', 'price', 'modifiedAt'];
+        const validOrderOptions = [
+            'createdAt',
+            'name',
+            'price',
+            'modifiedAt',
+            'rating',
+        ];
 
         const validDirectionOptions = ['DESC', 'ASC'];
 
@@ -47,9 +53,16 @@ const listProducts = async (req, res, next) => {
             }
         } else {
             const [products] = await connection.query(
-                `SELECT id, name, price, description, category, createdAt, sold,idUser
+                /*                 `SELECT id, name, price, description, category, createdAt, sold,idUser
                     FROM product
-                    ORDER BY ${orderBy} ${orderDirection}`
+                    ORDER BY ${orderBy} ${orderDirection}` */
+                `SELECT product.id, product.name, product.price, product.description, product.category, product.createdAt, 
+                    product.sold, product.idUser, AVG(ifnull(user_vote.vote, 0)) as userRating
+                FROM product left join user_vote 
+                    on (product.idUser = user_vote.idUserVoted)
+                group by product.id, product.name, product.price, product.description, product.category, product.createdAt, 
+                    product.sold, product.idUser
+                ORDER BY ${orderBy} ${orderDirection};`
             );
 
             for (let i = 0; i < products.length; i++) {
