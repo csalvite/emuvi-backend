@@ -57,7 +57,7 @@ const listProducts = async (req, res, next) => {
                     FROM product
                     ORDER BY ${orderBy} ${orderDirection}` */
                 `SELECT product.id, product.name, product.price, product.description, product.category, product.createdAt, 
-                    product.sold, product.idUser, AVG(ifnull(user_vote.vote, 0)) as userRating
+                    product.sold, product.idUser, AVG(ifnull(user_vote.vote, 0)) as rating
                 FROM product left join user_vote 
                     on (product.idUser = user_vote.idUserVoted)
                 group by product.id, product.name, product.price, product.description, product.category, product.createdAt, 
