@@ -6,7 +6,8 @@ const listProducts = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { search, order, direction } = req.query;
+        const { search, order, direction, minPrice, maxPrice, rating } =
+            req.query;
 
         const validOrderOptions = [
             'createdAt',
@@ -52,18 +53,47 @@ const listProducts = async (req, res, next) => {
                 }
             }
         } else {
-            const [products] = await connection.query(
-                /*                 `SELECT id, name, price, description, category, createdAt, sold,idUser
-                    FROM product
-                    ORDER BY ${orderBy} ${orderDirection}` */
-                `SELECT product.id, product.name, product.price, product.description, product.category, product.createdAt, 
-                    product.sold, product.idUser, AVG(ifnull(user_vote.vote, 0)) as rating
-                FROM product left join user_vote 
-                    on (product.idUser = user_vote.idUserVoted)
-                group by product.id, product.name, product.price, product.description, product.category, product.createdAt, 
-                    product.sold, product.idUser
-                ORDER BY ${orderBy} ${orderDirection};`
-            );
+            let products;
+            if ((minPrice && maxPrice) || rating) {
+                let select = `SELECT product.id, product.name, product.price, product.description, product.category, product.createdAt, 
+                                    product.sold, product.idUser, AVG(ifnull(user_vote.vote, 0)) as rating
+                                FROM product left join user_vote 
+                                    on (product.idUser = user_vote.idUserVoted)`;
+
+                const options = [];
+                if (minPrice && maxPrice) {
+                    select += ` WHERE price between ? and ?`;
+                    options.push(Number(minPrice));
+                    options.push(Number(maxPrice));
+                }
+
+                select += ` group by product.id, product.name, product.price, product.description, product.category, product.createdAt, 
+                            product.sold, product.idUser`;
+
+                if (rating) {
+                    select += ` having rating between ? and 5`;
+                    options.push(rating);
+                }
+
+                [products] = await connection.query(
+                    `${select} 
+                    ORDER BY ${orderBy} ${orderDirection};`,
+                    [options[0], options[1], options[2]]
+                );
+            } else {
+                [products] = await connection.query(
+                    /*                 `SELECT id, name, price, description, category, createdAt, sold,idUser
+                        FROM product
+                        ORDER BY ${orderBy} ${orderDirection}` */
+                    `SELECT product.id, product.name, product.price, product.description, product.category, product.createdAt, 
+                        product.sold, product.idUser, AVG(ifnull(user_vote.vote, 0)) as rating
+                    FROM product left join user_vote 
+                        on (product.idUser = user_vote.idUserVoted)
+                    group by product.id, product.name, product.price, product.description, product.category, product.createdAt, 
+                        product.sold, product.idUser
+                    ORDER BY ${orderBy} ${orderDirection};`
+                );
+            }
 
             for (let i = 0; i < products.length; i++) {
                 if (!products[i].sold) {
