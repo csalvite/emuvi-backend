@@ -4,7 +4,7 @@ const deleteFavProduct = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { idProduct } = req.params;
+        const { idUser, idProduct } = req.params;
 
         const [favProduct] = await connection.query(
             `SELECT id FROM user_favorite_product WHERE idUser = ?
