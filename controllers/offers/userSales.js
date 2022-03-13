@@ -18,7 +18,8 @@ const userSales = async (req, res, next) => {
             from product
             where product.id = user_reserve_product.idProduct) as productName,
         user_reserve_product.reserveStatus,
-        user_reserve_product.createdAt
+        user_reserve_product.createdAt,
+        user_reserve_product.idUserBuyer
         from user inner join user_reserve_product
             on (user.id = user_reserve_product.idUserOwner)
         where user_reserve_product.idUserOwner = ?;`,
@@ -36,6 +37,7 @@ const userSales = async (req, res, next) => {
             offers.push({
                 id: user[i].idReserve,
                 me: user[i].sellerName,
+                idUserBuyer: user[i].idUserBuyer,
                 buyerName: user[i].buyerName,
                 product: user[i].productName,
                 reserveStatus: user[i].reserveStatus,
