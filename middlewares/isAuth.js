@@ -25,7 +25,7 @@ const isAuth = async (req, res, next) => {
             // Desencriptamos el token.
             tokenInfo = jwt.verify(authorization, process.env.SECRET);
         } catch (_) {
-            const error = new Error('El token no es válido');
+            const error = new Error('No has iniciado sesión.');
             error.httpStatus = 401;
             throw error;
         }
