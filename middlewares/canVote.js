@@ -9,7 +9,7 @@ const canVote = async (req, res, next) => {
 
         const idReqUser = req.userAuth.id;
 
-        const [voteUser] = await connection.query(
+        /* const [voteUser] = await connection.query(
             `SELECT * FROM user_vote WHERE idUser = ? AND idUserVoted = ?`,
             [idReqUser, idUser]
         );
@@ -17,7 +17,7 @@ const canVote = async (req, res, next) => {
             const error = new Error('Ya has votado al usuario');
             error.httpStatus = 400;
             throw error;
-        }
+        } */
 
         if (Number(idUser) === idReqUser) {
             const error = new Error('No te puedes votar a ti mismo');
