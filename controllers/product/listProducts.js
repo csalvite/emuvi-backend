@@ -62,7 +62,7 @@ const listProducts = async (req, res, next) => {
             [options[0], options[1], options[2]]
         ); */
 
-        if (myWhere) {
+        if (search || (minPrice && maxPrice)) {
             select += ` ${myWhere} group by product.id, product.name, product.price, product.description, product.category, product.createdAt, 
                             product.sold, product.idUser`;
         } else {
