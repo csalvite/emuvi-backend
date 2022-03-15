@@ -28,7 +28,7 @@ const getPublicUser = async (req, res, next) => {
 
         // Para el perfil público necesitamos mostar sus productos
         const [products] = await connection.query(
-            `select id, name, price, description from product where idUser = ?`,
+            `select id, name, price, description from product where idUser = ? and sold = 0`,
             [idUser]
         );
 
@@ -96,6 +96,8 @@ const getPublicUser = async (req, res, next) => {
             city: user[0].city,
             province: user[0].province,
             postalCode: user[0].postalCode,
+            lat: user[0].latitude,
+            lon: user[0].longitude,
         };
 
         res.send({
