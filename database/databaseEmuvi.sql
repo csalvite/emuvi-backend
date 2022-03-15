@@ -4,9 +4,9 @@
     #############################
 */
 
-create database emuvi;
+/*create database emuvi;
 
-use emuvi;
+use emuvi; */
 
 /* borramos las tablas */
 drop table if exists notification, user_reserve_product, user_vote, user_favorite_product, product_photo, product, user;
