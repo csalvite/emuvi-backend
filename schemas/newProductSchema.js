@@ -11,17 +11,17 @@ const newProductSchema = Joi.object().keys({
                 errors[0].code === 'any.required' ||
                 errors[0].code === 'string.empty'
             ) {
-                return new Error('La propiedad [name] es requerida');
+                return new Error('El nombre es requerido');
             }
 
             return new Error(
-                'La propiedad [name] debe tener entre 3 y 50 caracteres. Solo puede contener letras o números.'
+                'El nombre debe tener entre 3 y 50 caracteres. Solo puede contener letras o números.'
             );
         }),
     price: Joi.number()
         .required()
         .min(1)
-        .max(1000000)
+        .max(10000)
         .error((errors) => {
             if (
                 errors[0].code === 'any.required' ||
@@ -30,7 +30,7 @@ const newProductSchema = Joi.object().keys({
                 return new Error('la propiedad [price] es requerida');
             }
             return new Error(
-                'La propiedad [price] debe tener entre 1 y 100 digitos. Solo puede ser numerica'
+                'Solo se aceptan precios entre 1€ y 99999€. Solo puede ser numerica'
             );
         }),
 
