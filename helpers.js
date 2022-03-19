@@ -122,8 +122,8 @@ async function newOfferMail(email, userBuyer, productName, idUser) {
     const emailBody = `
         <p> El usuario <strong>${userBuyer}</strong> quiere comprar tu producto <strong>${productName}</strong>!<p>
         <p> Puedes gestionar tus ofertas a través del siguiente enlace o pinchando sobre la imagen: </p>
-        <p> ${FRONT_HOST}/users/${idUser}/offers </p>
-        <a href=${FRONT_HOST}/users/${idUser}/offers><img src="https://i.ibb.co/c23zp3h/Email-oferta-de-compra.png" alt="Email_oferta_de_compra" border="0"></a>
+        <p> ${FRONT_HOST}/profile/receivedoffers </p>
+        <a href=${FRONT_HOST}/profile/receivedoffers><img src="https://i.ibb.co/c23zp3h/Email-oferta-de-compra.png" alt="Email_oferta_de_compra" border="0"></a>
     `;
 
     await sendMail({
