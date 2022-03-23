@@ -31,6 +31,19 @@ const addFavProduct = async (req, res, next) => {
             throw error;
         }
 
+        const [isOwner] = await connection.query(
+            `select id from product where  id = ? and idUser = ?`,
+            [idProduct, req.userAuth.id]
+        );
+
+        console.log(isOwner);
+
+        if (isOwner.length > 0) {
+            const error = new Error('Error: Eres el propietario.');
+            error.httpStatus = 400;
+            throw error;
+        }
+
         const [result] = await connection.query(
             `INSERT INTO user_favorite_product(idUser, idProduct) VALUES(?, ?)`,
             [req.userAuth.id, idProduct]

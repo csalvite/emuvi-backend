@@ -22,6 +22,17 @@ const newOffer = async (req, res, next) => {
             throw error;
         }
 
+        const [isOwner] = await connection.query(
+            `select id from product where id = ? and idUser = ?`,
+            [idProduct, req.userAuth.id]
+        );
+
+        if (isOwner.length > 0) {
+            const error = new Error('Error: Eres el propietario.');
+            error.httpStatus = 400;
+            throw error;
+        }
+
         // Si el producto no tiene una reserva aceptada procedemos a crear la reserva y enviar el email al usuario propietario
 
         // Obtengo el id y email del usuario propietario
