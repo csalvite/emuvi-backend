@@ -58,11 +58,11 @@ const newProductSchema = Joi.object().keys({
             switch (errors[0].code) {
                 case 'any.required':
                 case 'string.emty':
-                    return new Error('La propiedad [description] es requerida');
+                    return new Error('La propiedad [category] es requerida');
 
                 default:
                     return new Error(
-                        'La propiedad [description] debe tener entre 20 y 500 caracteres.'
+                        'Debes elegir una categoría entre las dispuestas.'
                     );
             }
         }),
